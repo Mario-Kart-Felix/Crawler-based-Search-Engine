@@ -21,6 +21,7 @@ public class main {
     public static Set<String> stopWordSet ;
     public static SnowballStemmer snowballStemmer;
 
+    static List<Thread>indexers ;
     public static String stem(String s){
         snowballStemmer.setCurrent(s);
         snowballStemmer.stem();
@@ -53,8 +54,18 @@ public class main {
      //   long totalTime = endTime - startTime;
      //   System.out.println(totalTime/100000);
 
-        Indexer indexer = new Indexer(mongo, credential, database, stopWordSet);
-       // indexer.updateDocument("index.html");
+     //   Indexer indexer = new Indexer(mongo, credential, database, stopWordSet);
+       // indexer.run();
+
+        indexers = new ArrayList<Thread>();
+        for(int i =0 ; i < 20; i++)
+        {
+            Thread temp = new Thread(new Indexer(mongo, credential, database, stopWordSet));
+            temp.start();
+            indexers.add(temp);
+        }
+       // Indexer indexer = new Indexer(mongo, credential, database, stopWordSet);
+       // indexer.updateDocument("index.html");/
 
         StringBuilder html6= new StringBuilder();
 /*
@@ -81,7 +92,8 @@ public class main {
                     + "<body><p>Parsed HTML into a doc.</p><p><div><h1>heading  <h2>heading </h2></h1></div></p></body></html>";
             //org.jsoup.nodes.Document document = Jsoup.parse(html6.toString());
             //System.out.println(html6);
-            indexer.run();
+
+
             //indexer.addDocument(document,"short_doc.html");
             try {
                //indexer.updateDocument("short_doc.html");

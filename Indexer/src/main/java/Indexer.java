@@ -19,7 +19,8 @@ import java.util.regex.Pattern;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class Indexer {
+public class Indexer implements Runnable{
+    static AtomicInteger i = new AtomicInteger();
     Map<String,Integer> tags_rank;
     MongoClient mongo;
     MongoCredential credential;
@@ -59,16 +60,23 @@ public class Indexer {
 
             MongoCollection <Document> collection;
             collection = database.getCollection("pages");
+
             while(true){
 
                 try{
                     Document result_doc = collection.findOneAndUpdate(select_filter, updates, options);
 
+
                 //check if status is 0
-                if(result_doc != null && result_doc.getInteger("status") == 0)
+                if(result_doc != null && result_doc.get("status").toString().equals("0"))
                 {
-                    updateDocument(result_doc.getString("url"));
+                    //updateDocument(result_doc.getString("url"));
+
                     addDocument(result_doc.getString("body"),result_doc.getString("url"));
+                    //synchronized(i){
+                        System.out.println("number of documents indexed : " + i.incrementAndGet());
+                    //}
+
                 }
 
 
@@ -117,23 +125,24 @@ public class Indexer {
 
         AtomicInteger current_word_pos = new AtomicInteger(0);
         //Elements e = document.children().first().children().first().children();
-        DFS(document.children(),current_word_pos,url);
+        //DFS(document.children(),current_word_pos,url);
 
-        /*
+
       //TODO: stem and remove stop words
        Page page;
-        Integer current_word_pos = 0;
+        //processText(element.ownText(),element.tagName(),terms_map,  current_word_pos,url);
+        //Integer current_word_pos = 0;
         Elements title = document.getElementsByTag("title");
 
-        processText(title.text(),"title",terms_map,  current_word_pos);
+        processText(title.text().toString(),"title",terms_map,  current_word_pos,url);
         Elements h;
         for(Integer i =1; i<=6; i++){
                 h = document.getElementsByTag("h"+ i.toString());
-            processText(h.text(),"h"+ i.toString(),terms_map,  current_word_pos);
+            processText(h.text(),"h"+ i.toString(),terms_map,  current_word_pos,url);
         }
         Elements p = document.getAllElements();
 
-        processText(p.text(),"p",terms_map,  current_word_pos);*/
+        processText(p.text(),"p",terms_map,  current_word_pos,url);
 
         List<WriteModel<Document>> updates = new ArrayList<WriteModel<Document>>();
         try {
@@ -204,7 +213,7 @@ public class Indexer {
                 }
                 // TODO: if the page is new , insert the page with positions and tags
                 page = terms_map.get(splitArray[i]);
-                System.out.println(current_word_pos);
+                //System.out.println(current_word_pos);
                 page.positions.add(current_word_pos.getAndIncrement());
 
 

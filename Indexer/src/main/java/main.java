@@ -1,6 +1,15 @@
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+import com.mongodb.internal.connection.ConcurrentLinkedDeque;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.jsoup.Jsoup;
 import org.tartarus.snowball.SnowballStemmer;
 import org.tartarus.snowball.ext.englishStemmer;
@@ -12,6 +21,8 @@ import java.sql.Time;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static java.lang.Thread.sleep;
 
 public class main {
     static MongoClient mongo;
@@ -35,141 +46,101 @@ public class main {
             stop_words[i] = stem(stop_words[i]);
         stopWordSet = new HashSet<String>(Arrays.asList(stop_words));
     }
-    public static void main (String[] argv){
+    public static void main (String[] argv) {
         //establish database connection once
         connectDB();
         initializeStopWords(stop_words);
-     //   long startTime = System.nanoTime();
-//
-//
-     //   String test = "_Al * i";
-//
-     //   Pattern pattern = Pattern.compile("[^a-z A-Z]");
-     //   Matcher matcher = pattern.matcher(test);
-     //   String text = matcher.replaceAll("");
-//
-     //   System.out.println(text);
-//
-     //   long endTime   = System.nanoTime();
-     //   long totalTime = endTime - startTime;
-     //   System.out.println(totalTime/100000);
+        //   long startTime = System.nanoTime();
+        //   System.out.println(totalTime/100000);
 
-     //   Indexer indexer = new Indexer(mongo, credential, database, stopWordSet);
-       // indexer.run();
+//
+//
+        //   String test = "_Al * i";
+//
+        //   Pattern pattern = Pattern.compile("[^a-z A-Z]");
+        //   Matcher matcher = pattern.matcher(test);
+        //   String text = matcher.replaceAll("");
+//
+        //   System.out.println(text);
+//
+        //   long endTime   = System.nanoTime();
+        //   long totalTime = endTime - startTime;
+
+        //   Indexer indexer = new Indexer(mongo, credential, database, stopWordSet);
+        // indexer.run();
+
+        ArrayList<ConcurrentLinkedDeque<Document>> Pool = new ArrayList<ConcurrentLinkedDeque<Document>>();
 
         indexers = new ArrayList<Thread>();
-        for(int i =0 ; i < 20; i++)
-        {
-            Thread temp = new Thread(new Indexer(mongo, credential, database, stopWordSet));
+        for (int i = 0; i < 100; i++) {
+            Pool.add(new ConcurrentLinkedDeque<Document>());
+            Thread temp = new Thread(new Indexer(mongo, credential, database, stopWordSet, Pool.get(Pool.size() - 1)));
             temp.start();
             indexers.add(temp);
         }
-       // Indexer indexer = new Indexer(mongo, credential, database, stopWordSet);
-       // indexer.updateDocument("index.html");/
+        // while(true){
+        MongoCollection<Document> collection;
+        collection = database.getCollection("pages");
+        while(true){
+        FindIterable<Document> result = collection.find(Filters.eq("status", 0));
+        //Bson update = Updates.set("status", 1);
+        //  Bson filter = Filters.eq("status",0 );
+        //collection.updateMany(filter,update);
+        int counter = 0;
+        int i = 0;
+        Iterator<ConcurrentLinkedDeque<Document>> it = Pool.iterator();
+        List<String> urls  = new ArrayList<String>();
+        for (Document doc : result) {
+            urls.add(doc.getString("url"));
+            //System.out.println(doc.getString("url"));
 
-        StringBuilder html6= new StringBuilder();
-/*
+            if (it.hasNext()) {
+                it.next().add(doc);
 
-        SnowballStemmer snowballStemmer = new englishStemmer();
-        String  test = "playing";
-       // test = test.toLowerCase().replaceAll("[-+.^:,_]","");
-        snowballStemmer.setCurrent(test);
-       snowballStemmer.stem();
-        String result = snowballStemmer.getCurrent();
-        System.out.println(result);
-*/
-       // System.out.println(mp.containsKey("ali"));
-        try {
-            File file = new File("src/main/in.html");
-            FileReader fr = new FileReader(file);
-            BufferedReader bfr = new BufferedReader(fr);
-            String Line;
-            while((Line=bfr.readLine() )!= null){
-                html6.append(Line);
-
+            } else {
+                it = Pool.iterator();
             }
-            String html = "<html><head><title>First parse</title></head>"
-                    + "<body><p>Parsed HTML into a doc.</p><p><div><h1>heading  <h2>heading </h2></h1></div></p></body></html>";
-            //org.jsoup.nodes.Document document = Jsoup.parse(html6.toString());
-            //System.out.println(html6);
 
 
-            //indexer.addDocument(document,"short_doc.html");
+            //  System.out.println(doc.toJson() + "\n ---------------------- \n ");
+        }
+            //System.out.println("-------"+urls.size());
+        for(int j = 0; j<urls.size(); j++){
+            Bson filter = new Document("url", urls.get(i));
+            //System.out.println(urls.get(i));
+            Bson newValue = new Document("status", 1);
+            Bson updateOperationDocument = new Document("$set", newValue);
+            collection.updateOne(filter, updateOperationDocument);
+        }
             try {
-               //indexer.updateDocument("short_doc.html");
-        //        indexer.normal_search("Add");
-            }catch (Exception e ) {
-            System.err.println(e.getMessage());
+                sleep(900);
+            } catch (InterruptedException e) {
+               // e.printStackTrace();
             }
-
-            }catch(Exception e){
-
         }
-
-
-      /*  Elements elements = document.select("*");
-
-        for (Element element : elements) {
-            System.out.println(element.tagName()+"   "+element.ownText());
+        /*for( int i =0 ; i < 100; i++)
+        {
+            try {
+                indexers.get(i).join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }*/
-       /* for(Element e : elements)
-            System.out.println( e.tagName() + ": " + e.text());
-*/
-        /*for(int i = 0; i<all_tags.size(); i++){
-            Element element = all_tags.first();
-            System.out.println(element.);
-            System.out.println(element.text());
-            all_tags.next();
-        }*/
-        //System.out.println(all_tags);
-        /*try {
-            System.out.println("start");
 
-            MongoClient mongo = new MongoClient("localhost", 27017);
-            MongoCredential credential;
-            credential = MongoCredential.createCredential("", "test", "".toCharArray());
-            System.out.println("Connected to the database successfully");
-            MongoDatabase database = mongo.getDatabase("test");
-            System.out.println("Credentials ::" + credential);
-            //database.createCollection("sampleCollection");(table)
-            MongoCollection <Document> collection = database.getCollection("terms");
+       // }
 
-            System.out.println("Collection myCollection selected successfully");
-            List<Integer> arr = Arrays.asList(1,2,3);
-            Document page = new Document("positions", arr)
-                    .append("url", "world.com")
-                    .append("freq", 10)
-                    .append("tag", 1);
-            List<Document> documents = new ArrayList<Document>();
-            documents.add(page);
-            Document document = new Document("term", "dodo")
-                    .append("documents", documents);
-            //collection.insertOne(document);
-            //update documents
-            //update,delete -> set,unset
-            collection.updateOne(Filters.eq("documents.url", "g.com"), Updates.unset("documents.$"));
-            //collection.deleteOne(Filters.eq("x.url", "world.com"));
-            System.out.println("Document update successfully..."+ collection.count());
-            //retrieve documents.
-           FindIterable<Document> iterDoc = collection.find();
-           int i = 1;
 
-           // Getting the iterator
-           Iterator it = iterDoc.iterator();
 
-           while (it.hasNext()) {
-               System.out.println(it.next());
-               i++;
-           }
-        }
-        catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        */
+
     }
     private static void connectDB() {
         try {
-            mongo = new MongoClient("localhost", 27017);
+
+            MongoClientOptions.Builder clientOptions = new MongoClientOptions.Builder();
+            clientOptions.connectionsPerHost(120);
+
+            mongo = new MongoClient(new ServerAddress("localhost",27017),clientOptions.build());
+            //mongo = new MongoClient("localhost:27017?replicaSet=rs0&maxPoolSize=200", 27017);
             credential = MongoCredential.createCredential("", "test", "".toCharArray());
             database = mongo.getDatabase("test");
         }catch(Exception e){

@@ -4,6 +4,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.*;
+import com.mongodb.internal.connection.ConcurrentLinkedDeque;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.jsoup.Jsoup;
@@ -18,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.mongodb.client.model.Filters.eq;
+import static java.lang.Thread.sleep;
 
 public class Indexer implements Runnable{
     static AtomicInteger i = new AtomicInteger();
@@ -28,11 +30,13 @@ public class Indexer implements Runnable{
     public  Set<String> stopWordSet ;
     Map<String,Page> terms_map=new HashMap<String, Page>();
     Pattern pattern;
-
-
+    List<Document> documents_to_process;
+    MongoCollection <Document> collection;
+    ConcurrentLinkedDeque<Document> deque;
     //stemmer
     SnowballStemmer snowballStemmer ;
-    public   Indexer(MongoClient _mongo, MongoCredential _credential, MongoDatabase _database,Set<String> _stopWordSet ){
+    public   Indexer(MongoClient _mongo, MongoCredential _credential, MongoDatabase _database, Set<String> _stopWordSet , ConcurrentLinkedDeque<Document> _deque){
+        deque=_deque;
         snowballStemmer = new englishStemmer();
         mongo = _mongo;
         credential = _credential;
@@ -48,45 +52,26 @@ public class Indexer implements Runnable{
         return snowballStemmer.getCurrent();
     }
 
+    public void setDocuments(List<Document> docs){
+        documents_to_process = docs;
+    }
 
     public void run(){
-
-            //search query
-            Bson select_filter = Filters.eq("status", 0);
-            Bson updates = Updates.set("status",1);
-            FindOneAndUpdateOptions options = new FindOneAndUpdateOptions();
-            options.returnDocument(ReturnDocument.BEFORE);
-            options.upsert(false);
-
-            MongoCollection <Document> collection;
-            collection = database.getCollection("pages");
-
-            while(true){
-
-                try{
-                    Document result_doc = collection.findOneAndUpdate(select_filter, updates, options);
-
-
-                //check if status is 0
-                if(result_doc != null && result_doc.get("status").toString().equals("0"))
-                {
-                    //updateDocument(result_doc.getString("url"));
-
-                    addDocument(result_doc.getString("body"),result_doc.getString("url"));
-                    //synchronized(i){
-                        System.out.println("number of documents indexed : " + i.incrementAndGet());
-                    //}
-
-                }
-
-
-
-                }catch (Exception e){
-                    System.out.println(" update page status " + e.getMessage());
+        collection = database.getCollection("terms");
+        while(true) {
+            while (deque.isEmpty()) {
+                try {
+                    sleep(300);
+                } catch (InterruptedException e) {
+                    //e.printStackTrace();
                 }
             }
-
-
+            terms_map.clear();
+            Document doc = deque.poll();
+            updateDocument(doc.getString("url"));
+            addDocument(doc.getString("body"), doc.getString("url"));
+            System.out.println("documenets indexed " +i.getAndIncrement());
+        }
     }
 
     private void init_tags_rank() {
@@ -121,7 +106,7 @@ public class Indexer implements Runnable{
     }
     public void addDocument(String _document, String url){
         org.jsoup.nodes.Document document = Jsoup.parse(_document);
-        MongoCollection <Document> collection = database.getCollection("terms");
+
 
         AtomicInteger current_word_pos = new AtomicInteger(0);
         //Elements e = document.children().first().children().first().children();
@@ -205,7 +190,7 @@ public class Indexer implements Runnable{
 
                 // check if it is a stop word
                 if(stopWordSet.contains(splitArray[i]) || splitArray[i].length() == 0)
-                    continue;
+                      continue;
                 //check if word already exists
                 if(!terms_map.containsKey(splitArray[i])){
                     // System.out.println("no term : "+term);

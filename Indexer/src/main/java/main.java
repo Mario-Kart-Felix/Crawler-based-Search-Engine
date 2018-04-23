@@ -10,19 +10,11 @@ import com.mongodb.client.model.Updates;
 import com.mongodb.internal.connection.ConcurrentLinkedDeque;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.jsoup.Jsoup;
 import org.tartarus.snowball.SnowballStemmer;
 import org.tartarus.snowball.ext.englishStemmer;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.sql.Time;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static java.lang.Thread.sleep;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class main {
     static MongoClient mongo;
@@ -44,92 +36,63 @@ public class main {
 
         for(int i = 0; i < stop_words.length; i++)
             stop_words[i] = stem(stop_words[i]);
+
         stopWordSet = new HashSet<String>(Arrays.asList(stop_words));
     }
+
     public static void main (String[] argv) {
-        //establish database connection once
+
+        // Establish database connection once.
         connectDB();
         initializeStopWords(stop_words);
-        //   long startTime = System.nanoTime();
-        //   System.out.println(totalTime/100000);
 
-//
-//
-        //   String test = "_Al * i";
-//
-        //   Pattern pattern = Pattern.compile("[^a-z A-Z]");
-        //   Matcher matcher = pattern.matcher(test);
-        //   String text = matcher.replaceAll("");
-//
-        //   System.out.println(text);
-//
-        //   long endTime   = System.nanoTime();
-        //   long totalTime = endTime - startTime;
+        /*
+         Tesing-start
 
-        //   Indexer indexer = new Indexer(mongo, credential, database, stopWordSet);
-        // indexer.run();
+         */
 
-        ArrayList<ConcurrentLinkedDeque<Document>> Pool = new ArrayList<ConcurrentLinkedDeque<Document>>();
 
-        indexers = new ArrayList<Thread>();
-        for (int i = 0; i < 100; i++) {
-            Pool.add(new ConcurrentLinkedDeque<Document>());
-            Thread temp = new Thread(new Indexer(mongo, credential, database, stopWordSet, Pool.get(Pool.size() - 1)));
-            temp.start();
-            indexers.add(temp);
-        }
-        // while(true){
+        /*
+            Testing-end
+         */
+        // TODO: then when a document is processed set it's status to 2, not sure when should this be done and should it be done by bulk or single document
         MongoCollection<Document> collection;
+
+        // Initialize Indexer connection parameters and stop words.
+        Indexer.setInitialParameters(mongo, credential, database, stopWordSet);
+
+
         collection = database.getCollection("pages");
-        while(true){
+
+        // Thread pool for indexers.
+        ExecutorService indexers_thread_pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
         FindIterable<Document> result = collection.find(Filters.eq("status", 0));
-        //Bson update = Updates.set("status", 1);
-        //  Bson filter = Filters.eq("status",0 );
-        //collection.updateMany(filter,update);
-        int counter = 0;
-        int i = 0;
-        Iterator<ConcurrentLinkedDeque<Document>> it = Pool.iterator();
-        List<String> urls  = new ArrayList<String>();
-        for (Document doc : result) {
-            urls.add(doc.getString("url"));
-            //System.out.println(doc.getString("url"));
 
-            if (it.hasNext()) {
-                it.next().add(doc);
+        // Set status to 1, (caught).
+        Bson updates = Updates.set("status",1);
 
-            } else {
-                it = Pool.iterator();
-            }
+        // Holding urls to bee updated.
+        ArrayList<String> urls_to_update = new ArrayList<String>();
 
-
-            //  System.out.println(doc.toJson() + "\n ---------------------- \n ");
-        }
-            //System.out.println("-------"+urls.size());
-        for(int j = 0; j<urls.size(); j++){
-            Bson filter = new Document("url", urls.get(i));
-            //System.out.println(urls.get(i));
-            Bson newValue = new Document("status", 1);
-            Bson updateOperationDocument = new Document("$set", newValue);
-            collection.updateOne(filter, updateOperationDocument);
-        }
-            try {
-                sleep(900);
-            } catch (InterruptedException e) {
-               // e.printStackTrace();
-            }
-        }
-        /*for( int i =0 ; i < 100; i++)
+        for(Document doc : result)
         {
-            try {
-                indexers.get(i).join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }*/
 
-       // }
+            urls_to_update.add(doc.getString("url"));
+            indexers_thread_pool.execute(new Indexer(doc));
+
+        }
 
 
+        // Url update filer.
+        Bson filter = Filters.in("url",urls_to_update);
+
+        // Update status of pages set it to indexed.
+        collection.updateMany(filter,updates);
+
+        indexers_thread_pool.shutdown();
+
+        System.out.println("Indexer finished");
 
 
     }
@@ -143,10 +106,11 @@ public class main {
             //mongo = new MongoClient("localhost:27017?replicaSet=rs0&maxPoolSize=200", 27017);
             credential = MongoCredential.createCredential("", "test", "".toCharArray());
             database = mongo.getDatabase("test");
+
         }catch(Exception e){
+
             System.out.println("error connecting to database "+e.getMessage());
 
         }
     }
-
 }

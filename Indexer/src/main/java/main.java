@@ -47,20 +47,27 @@ public class main {
         initializeStopWords(stop_words);
 
         /*
-         Tesing-start
+         Tesing search-start
 
          */
+
+        String search_text = " ahmed firefox";
+        Search.setInitialParameters(mongo, credential, database, stopWordSet);
+
+        Search client = new Search();
+
+        client.normal_search(search_text);
 
 
         /*
-            Testing-end
+            Testing search-end
          */
         // TODO: then when a document is processed set it's status to 2, not sure when should this be done and should it be done by bulk or single document
-        MongoCollection<Document> collection;
+       /*
+       MongoCollection<Document> collection;
 
         // Initialize Indexer connection parameters and stop words.
         Indexer.setInitialParameters(mongo, credential, database, stopWordSet);
-
 
         collection = database.getCollection("pages");
 
@@ -93,7 +100,7 @@ public class main {
         indexers_thread_pool.shutdown();
 
         System.out.println("Indexer finished");
-
+*/
 
     }
     private static void connectDB() {

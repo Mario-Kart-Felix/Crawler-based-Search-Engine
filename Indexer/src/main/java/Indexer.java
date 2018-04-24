@@ -161,12 +161,13 @@ public class Indexer implements Runnable {
 
                 // Store unstemmed.
                 unstemmed = splitArray.get(i);
-                // Stem the word.
-                splitArray.set(i, stem(splitArray.get(i)));
 
                 // Remove unwanted symbols.
                 Matcher matcher = pattern.matcher(splitArray.get(i));
                 splitArray.set(i,matcher.replaceAll("").toLowerCase());
+
+                // Stem the word.
+                splitArray.set(i, stem(splitArray.get(i)));
 
                 // Check if it is a stop word.
                 if (stopWordSet.contains(splitArray.get(i)) || splitArray.get(i).length() == 0)
@@ -247,8 +248,9 @@ public class Indexer implements Runnable {
     public void normal_search(String term) {
         MongoCollection<Document> collection;
         collection = database.getCollection("terms");
-        FindIterable<Document> result = collection.find(Filters.eq("term", term));
-        for (Document doc : result)
-            System.out.println(doc.toJson() + "\n ---------------------- \n ");
+        Document result = collection.find(Filters.eq("term", term)).first();
+        FindIterable<Document> docs = (FindIterable<Document>) result.get("documents");
+        for (Document doc : docs)
+            System.out.println(doc.getString("url") + "\n ---------------------- \n ");
     }
 }

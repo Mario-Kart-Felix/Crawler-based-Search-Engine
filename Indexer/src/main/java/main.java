@@ -51,8 +51,9 @@ public class main {
 
          */
 
-        String search_text = " ahmed firefox";
         Search.setInitialParameters(mongo, credential, database, stopWordSet);
+
+        String search_text = " ahmed google chrome";
 
         Search client = new Search();
 

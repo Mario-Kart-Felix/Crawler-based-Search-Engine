@@ -12,6 +12,7 @@ import org.tartarus.snowball.SnowballStemmer;
 import org.tartarus.snowball.ext.englishStemmer;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 //import org.apache.commons.text.similarity;
@@ -20,6 +21,7 @@ public class Search {
     private static MongoClient mongo;
     private static MongoCredential credential;
     private static MongoDatabase database;
+    static ConcurrentHashMap<String,Float> ranks = new ConcurrentHashMap<>();
 
     private SnowballStemmer snowballStemmer;
 
@@ -37,11 +39,13 @@ public class Search {
         pattern = Pattern.compile("[^a-z A-Z]");
 
     }
+
     public void add_suggestion(String sugg){
         MongoCollection<Document> collection;
         collection = database.getCollection("suggestions");
         collection.insertOne(new Document("suggestion",sugg));
     }
+
     public String get_suggestions(String sugg){
         MongoCollection<Document> collection;
         collection = database.getCollection("suggestions");
@@ -63,9 +67,6 @@ public class Search {
             data.put("Suggestions",words);
         return data.toString();
     }
-
-
-
 
     public String phrase_search(String search_text) {
 
@@ -197,7 +198,7 @@ public class Search {
                         title.append(s).append(" ");
                     }
                     StringBuilder snippet = new StringBuilder();
-                    for(int i = Math.max(indx-50,0); i < Math.min(indx+50,body.size()); i++)
+                    for(int i = Math.max(indx-10,0); i < Math.min(indx+10,body.size()); i++)
                     {
                         snippet.append(body.get(i)).append(" ");
                     }
@@ -374,9 +375,10 @@ public class Search {
 
         ArrayList<String> sorted_urls  = new ArrayList<String>();
 
-        double weight_unstemmed = 1;
+        double weight_unstemmed = 3;
         double weight_words = 0.5;
-        double weight_title = 5;
+        double weight_title = 6;
+        double weight_ranker = 4;
 
         for (Map.Entry<String, PageScore> entry : pages.entrySet()) {
 
@@ -389,7 +391,12 @@ public class Search {
                     entry.getValue().words * weight_words+
                     entry.getValue().title_score * weight_title);
 
-            mp.put(entry.getKey(), score);
+            double rank_sc = 0;
+            if(ranks.containsKey(entry.getKey()))
+                rank_sc = ranks.get(entry.getKey())* weight_ranker;
+
+            System.out.println(entry.getKey()+" score "+rank_sc);
+            mp.put(entry.getKey(), score+ rank_sc);
 
             sorted_urls.add(entry.getKey());
             // Logging.

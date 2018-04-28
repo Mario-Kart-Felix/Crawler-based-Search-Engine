@@ -226,9 +226,9 @@ public class Search {
             }
 
         }
-
-        json_array.deleteCharAt(json_array.length()-1);
-        json_array.append("]");
+//
+//        json_array.deleteCharAt(json_array.length()-1);
+//        json_array.append("]");
 
         return jsonarray.toJSONString();
         // Get term with  this word in the unstemmed array.
@@ -428,9 +428,9 @@ public class Search {
 
             List<String> body = top_page.get("body", List.class);
 
-            for(int pos : curr_page_pos)
+            for(int j = 0; j< Math.min(curr_page_pos.size(), 50); j++)
             {
-
+                int pos = curr_page_pos.get(j);
                 for(int i = Math.max(0, pos-5); i<Math.min(pos+5, body.size()); i++)
                 {
 
@@ -443,15 +443,6 @@ public class Search {
             object.put("title",""+title+"");
             object.put("snippet",""+snippet+"");
             jsonarray.add(object);
-
-        }
-        for(String url : sorted_urls)
-        {
-
-            //System.out.println("value of " + url + " is " + mp.get(url));
-
-            // Get page with this url.
-
 
         }
 

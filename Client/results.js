@@ -6,7 +6,7 @@ $.get("http://localhost:4567/search/" + localStorage.getItem("search"), function
     for(obj in succ){
         l="<div class=\"search-results\">"+
             "<h2><a href=\""+succ[obj].url+"\">"+succ[obj].title+"</a></h2>"+
-        "<p>"+succ[obj].url+"</p>"+
+        "<a><a style = \"color:green\">"+succ[obj].url+"</a></a>"+
         "<p class=\"summary\">"+succ[obj].snippet+"</p>"+
         "</div>";
         $('#resultsPage').append(l);

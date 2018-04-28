@@ -17,6 +17,18 @@ getSearchSuggestions = function (text) {
     });
 };
 submitSearch=function(text){
+    localStorage.setItem("search-type","search");
+    localStorage.setItem("search", document.getElementById("searchbar").value);
+    window.location.href="results.html";
+    // $.get("http://localhost:4567/search/" + document.getElementById("searchbar").value, function (succ) {
+    //     // $( ".result" ).html( data );
+    //     console.log(JSON.parse(succ));
+    //
+    //     alert( succ );
+    // });
+};
+submitSearch=function(text){
+    localStorage.setItem("search-type","psearch");
     localStorage.setItem("search", document.getElementById("searchbar").value);
     window.location.href="results.html";
     // $.get("http://localhost:4567/search/" + document.getElementById("searchbar").value, function (succ) {
@@ -42,3 +54,4 @@ var input = document.getElementById("searchbar");
 
 document.getElementById("searchbar").onkeypress = sendDelayedKeyPress;
 document.getElementById("Search").onclick=submitSearch;
+document.getElementById("PSearch").onclick=submitPSearch;

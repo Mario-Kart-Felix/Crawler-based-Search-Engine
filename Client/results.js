@@ -1,8 +1,13 @@
-$.get("http://localhost:4567/search/" + localStorage.getItem("search"), function (succ) {
+
+$.get("http://localhost:4567/"+localStorage.getItem("search-type")+"/" + localStorage.getItem("search"), function (succ) {
     // $( ".result" ).html( data );
+    localStorage.setItem("data",succ);
+    localStorage.setItem("location","0");
     console.log(JSON.parse(succ));
     results = document.getElementById("resultsPage");
     succ=JSON.parse(succ);
+    $('#resultsPage').empty();
+    let i=0;
     for(obj in succ){
         l="<div class=\"search-results\">"+
             "<h2><a href=\""+succ[obj].url+"\">"+succ[obj].title+"</a></h2>"+
@@ -10,12 +15,12 @@ $.get("http://localhost:4567/search/" + localStorage.getItem("search"), function
         "<p class=\"summary\">"+succ[obj].snippet+"</p>"+
         "</div>";
         $('#resultsPage').append(l);
-        // $('#resultsPage').append("<div class = \"new_row\">"+
-        //     "<label>country </label>"+
-        //     "<input type= \"input\" name = \"country\">"+
-        //     "<label>IPs </label>"+
-        //     "<input type= \"input\" name = \"IPs\">"+
-        //     "</div>");
+        i++;
+        if(i>=10)
+        {
+            break;
+        }
+
     }
 
 });
@@ -50,8 +55,45 @@ getSearchSuggestions = function (text) {
     });
 };
 submitSearch=function(text){
+    localStorage.setItem("search-type","search");
     localStorage.setItem("search", document.getElementById("search-bar").value);
     window.location.href="results.html";
 };
+submitPSearch=function(text){
+    localStorage.setItem("search-type","psearch");
+    localStorage.setItem("search", document.getElementById("search-bar").value);
+    window.location.href="results.html";
+};
+nextPage=function(){
+    let succ=localStorage.getItem("data");
+
+    succ=JSON.parse(succ);
+    $('#resultsPage').empty();
+    let start=parseInt(localStorage.getItem("location"));
+
+    let i=start;
+    let s=0;
+    for(obj in succ){
+        s++;
+        if(s<start) {
+            continue;
+        }
+        l="<div class=\"search-results\">"+
+            "<h2><a href=\""+succ[obj].url+"\">"+succ[obj].title+"</a></h2>"+
+            "<a><a style = \"color:green\">"+succ[obj].url+"</a></a>"+
+            "<p class=\"summary\">"+succ[obj].snippet+"</p>"+
+            "</div>";
+        $('#resultsPage').append(l);
+        i++;
+        if(s>=start+10)
+        {
+            break;
+        }
+
+    }
+    localStorage.setItem("location",(start+10).toString());
+};
 document.getElementById("search-bar").onkeypress=sendDelayedKeyPress;
 document.getElementById("mag").onclick=submitSearch;
+document.getElementById("mic").onclick=submitPSearch;
+document.getElementById("nextPage").onclick=nextPage;

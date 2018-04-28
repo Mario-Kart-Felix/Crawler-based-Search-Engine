@@ -10,13 +10,27 @@ public class main {
             response.header("Content-Type", "text/html");
             response.type("text/html");
         });
-        get("/search/:name", (request, response) -> {
+        get("/psearch/:name", (request, response) -> {
             String suggestion=request.params("name");
             Search search= new Search();
             //TODO:insert search for the database
             search.add_suggestion(suggestion);
             response.status(200);
             String val = search.phrase_search(suggestion);
+            response.body(val);
+            System.out.println(val);
+            if(response.body()==null||response.body().equals(""))
+                response.body("not empty");
+            return response.body();
+            //return "Hello: " + request.params("name");
+        });
+        get("/search/:name", (request, response) -> {
+            String suggestion=request.params("name");
+            Search search= new Search();
+            //TODO:insert search for the database
+            search.add_suggestion(suggestion);
+            response.status(200);
+            String val = search.normal_search(suggestion);
             response.body(val);
             System.out.println(val);
             if(response.body()==null||response.body().equals(""))

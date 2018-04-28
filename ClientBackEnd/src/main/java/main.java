@@ -27,6 +27,8 @@ public class main {
 
             bufferedReader.close();
         } catch (IOException e) {
+            e.printStackTrace();
+            System.out.printf("ERROR READING RANKS.TXT0");
         }
 
 
@@ -42,7 +44,7 @@ public class main {
             //TODO:insert search for the database
             search.add_suggestion(suggestion);
             response.status(200);
-            String val = search.phrase_search(suggestion);
+            String val = search.normal_search(suggestion);
             response.body(val);
             System.out.println(val);
             if(response.body()==null||response.body().equals(""))

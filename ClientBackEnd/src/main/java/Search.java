@@ -375,9 +375,10 @@ public class Search {
 
         ArrayList<String> sorted_urls  = new ArrayList<String>();
 
-        double weight_unstemmed = 1;
+        double weight_unstemmed = 3;
         double weight_words = 0.5;
         double weight_title = 6;
+        double weight_ranker = 4;
 
         for (Map.Entry<String, PageScore> entry : pages.entrySet()) {
 
@@ -390,7 +391,12 @@ public class Search {
                     entry.getValue().words * weight_words+
                     entry.getValue().title_score * weight_title);
 
-            mp.put(entry.getKey(), score+ ranks.get(entry.getKey()));
+            double rank_sc = 0;
+            if(ranks.containsKey(entry.getKey()))
+                rank_sc = ranks.get(entry.getKey())* weight_ranker;
+
+            System.out.println(entry.getKey()+" score "+rank_sc);
+            mp.put(entry.getKey(), score+ rank_sc);
 
             sorted_urls.add(entry.getKey());
             // Logging.

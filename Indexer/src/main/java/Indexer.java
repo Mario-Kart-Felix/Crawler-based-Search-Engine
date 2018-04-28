@@ -29,6 +29,8 @@ public class Indexer implements Runnable {
     private Document documents_to_process;
     private MongoCollection<Document> collection;
 
+    public static AtomicInteger i = new AtomicInteger(0);
+
     // Stemmer.
     SnowballStemmer snowballStemmer;
 
@@ -68,7 +70,7 @@ public class Indexer implements Runnable {
 
             //System.out.println(" finished 1 doc");
             //addDocument(documents_to_process.getString("body"), documents_to_process.getString("url"));
-//            System.out.println("documenets indexed " + i.getAndIncrement());
+            System.out.println("documenets indexed " + i.getAndIncrement());
 
 
     }
@@ -102,6 +104,8 @@ public class Indexer implements Runnable {
 
         // Process title, we don't change position here.
         processText(title, "title", terms_map, current_word_pos, url);
+
+        current_word_pos.set(0);
 
         // Process whole body.
         processText(full_text, "p", terms_map, current_word_pos, url);
@@ -170,9 +174,11 @@ public class Indexer implements Runnable {
             for (int i = 0; i < splitArray.size(); i++) {
 
 
-                // Check if empty don't increment.
-                if( splitArray.get(i).length() == 0)
+//                // Check if empty don't increment.
+                if( splitArray.get(i).length() == 0) {
+                    current_word_pos.getAndIncrement();
                     continue;
+                }
 
                 // Remove unwanted symbols.
                 Matcher matcher = pattern.matcher(splitArray.get(i));

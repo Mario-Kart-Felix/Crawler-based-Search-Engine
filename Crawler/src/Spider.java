@@ -2,6 +2,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import static java.lang.System.exit;
+
 public class Spider {
 
     private static Thread[] crawlers;
@@ -78,7 +80,6 @@ public class Spider {
 //        {
 //
 //        }
-
 
 
         // Create array with number of crawlers needed

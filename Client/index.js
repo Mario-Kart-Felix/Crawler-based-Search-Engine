@@ -16,6 +16,16 @@ getSearchSuggestions = function (text) {
         // alert( succ );
     });
 };
+submitSearch=function(text){
+    localStorage.setItem("search", document.getElementById("searchbar").value);
+    window.location.href="results.html";
+    // $.get("http://localhost:4567/search/" + document.getElementById("searchbar").value, function (succ) {
+    //     // $( ".result" ).html( data );
+    //     console.log(JSON.parse(succ));
+    //
+    //     alert( succ );
+    // });
+};
 sendDelayedKeyPress = function (key) {
     console.log("first");
     document.getElementById("searchbar").onkeypress = null;
@@ -31,3 +41,4 @@ var input = document.getElementById("searchbar");
 
 
 document.getElementById("searchbar").onkeypress = sendDelayedKeyPress;
+document.getElementById("Search").onclick=submitSearch;

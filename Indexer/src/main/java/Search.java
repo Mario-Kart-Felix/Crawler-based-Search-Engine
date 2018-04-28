@@ -1,9 +1,12 @@
 import com.mongodb.*;
 import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.*;
 import org.bson.Document;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.tartarus.snowball.SnowballStemmer;
 import org.tartarus.snowball.ext.englishStemmer;
 
@@ -31,7 +34,12 @@ public class Search {
 
     }
 
-    public void phrase_search(String search_text) {
+    public String phrase_search(String search_text) {
+
+        // Json array to pass results.
+       StringBuilder json_array = new StringBuilder("[");
+
+        JSONArray jsonarray = new JSONArray();
 
         // Split words to search for each word independently.
         String[] words = search_text.split("\\s+");
@@ -51,12 +59,14 @@ public class Search {
             if(stopWordSet.contains(words[i]))
                 phrase_start_index++;
 
+            else
+                break;
 
         }
 
         // If all stop words then return.
         if(phrase_start_index>= words.length)
-            return;
+            return jsonarray.toJSONString();
 
         // First word to search with.
         String word = words[phrase_start_index];
@@ -82,6 +92,11 @@ public class Search {
                 Document document = doc.get("document", Document.class);
                 String url = document.getString("url");
 
+                if(url.equals("http://blog.portswigger.net/2015/02"))
+
+                {
+                    int x = 3;
+                }
                 Document page = page_collection.find(Filters.eq("url",  url)).first();
                 List<String> body =  page.get("body", List.class);
 
@@ -89,12 +104,100 @@ public class Search {
 
                 for( Integer indx : positions)
                 {
-                    String test = body.get(indx);
-                    int x = 2321;
+
+                    String word_in_doc = body.get(indx);
+
+                    // Clean the word in doc.
+                    Matcher matcher = pattern.matcher(word_in_doc);
+                    word_in_doc = matcher.replaceAll("").toLowerCase();
+
+                    // Check if word != word in doc.
+                    if(!word.equals(word_in_doc))
+                        continue;
+
+                    // Walk through the document to get the exact phrase.
+
+                    int start_indx = indx;
+                    int lenght_of_remaining_phrase = words.length - phrase_start_index;
+
+                    // If remaining words are less than the phrase length.
+                    if (indx + lenght_of_remaining_phrase > body.size())
+                        return jsonarray.toJSONString();
+
+                    Boolean matched = false;
+                    int words_start = phrase_start_index+1;
+                    int matched_words_count = phrase_start_index+1;
+                    for(int i = indx + 1; i< indx + lenght_of_remaining_phrase; i++)
+                    {
+
+                        // pattern = all ascii codes that are not alphabet.
+                        Matcher doc_word_matcher = pattern.matcher(body.get(i));
+                        String word_to_compare = doc_word_matcher.replaceAll("").toLowerCase();
+
+                        if(!words[words_start].equals(word_to_compare) &&
+                                !stopWordSet.contains(words[words_start]) &&
+                                !stopWordSet.contains(body.get(i)))
+                        {
+
+
+                            break;
+                        }
+
+                        if( words[words_start].equals(word_to_compare) || stopWordSet.contains(words[words_start]))
+                        {
+
+                            matched_words_count++;
+
+                        }
+                        words_start++;
+
+                    }
+
+                    if(matched_words_count == words.length)
+                    {
+
+                        // Title string.
+                        StringBuilder title = new StringBuilder();
+                        List<String> title_arr = page.get("title", List.class);
+                        for( String s : title_arr)
+                        {
+                            title.append(s).append(" ");
+                        }
+                        StringBuilder snippet = new StringBuilder();
+                        for(int i = Math.max(indx-50,0); i < Math.min(indx+50,body.size()); i++)
+                        {
+                            snippet.append(body.get(i)).append(" ");
+                        }
+                        JSONObject object = new JSONObject();
+                        
+                        object.put("url", ""+url+"");
+                        object.put("title",""+title+"");
+                        object.put("snippet",""+snippet+"");
+                        jsonarray.add(object);
+                        json_array.append("{" + "\"url\":\"")
+                                .append(url).append("\",")
+                                .append("\"snippet\":")
+                                .append("\""+snippet+"")
+                                .append("\",")
+                                .append("\"title\":\"")
+                                .append(title)
+                                .append("\"},");
+//                        System.out.println(" matched url : " + url );
+//                        System.out.println(" snippet : " + snippet );
+//                        System.out.println(" title : " + title );
+//                        System.out.println(" json : " + json_array );
+
+                        break;
+                    }
+
                 }
 
             }
 
+            json_array.deleteCharAt(json_array.length()-1);
+            json_array.append("]");
+
+            return jsonarray.toJSONString();
             // Get term with  this word in the unstemmed array.
            /*  Bson filter = Filters.in("documents.unstemmed",word);
 
@@ -137,14 +240,16 @@ public class Search {
 
 
     // TODO:: Remove stop words.
-    public void normal_search(String search_text) {
+    public String normal_search(String search_text) {
 
         // Table used in search.
         MongoCollection<Document> collection;
         collection = database.getCollection("terms");
+        MongoCollection<Document> page_collection = database.getCollection("pages");
 
         // Pages to be ranked.
         HashMap<String, PageScore> pages = new HashMap<String, PageScore>();
+        HashMap<String, List<Integer>> page_positions = new HashMap<String, List<Integer>>();
 
         // Init words count = 0 , used to normalize ranks.
         int words_count = 0;
@@ -188,6 +293,8 @@ public class Search {
 
                 String url = doc.getString("url");
                 String tag = doc.getString("tag");
+                List<Integer> positions = doc.get("positions",List.class);
+
 
                 // Get list of unstemmed words to rank page by the number of unstemmed words found.
                 List<String> unstemmed_words_in_document = doc.get("unstemmed", List.class);
@@ -213,11 +320,30 @@ public class Search {
 
                 temp_page_score.words = temp_page_score.words + 1;
 
+
                 // Return back the page.
                 pages.put(url, temp_page_score);
 
+                // Add page positions.
+                if(!page_positions.containsKey(url))
+                {
+                    page_positions.put(url, new ArrayList<Integer>());
+                }
+                List<Integer> temp_pos = page_positions.get(url);
+                temp_pos.add(positions.get(0));
+
+                page_positions.put(url,temp_pos);
+
             }
         }
+
+        TreeMap<String,Double> mp = new TreeMap<String, Double>();
+
+        ArrayList<String> sorted_urls  = new ArrayList<String>();
+
+        double weight_unstemmed = 1;
+        double weight_words = 0.5;
+        double weight_title = 5;
 
         for (Map.Entry<String, PageScore> entry : pages.entrySet()) {
 
@@ -225,14 +351,78 @@ public class Search {
             pages.get(entry.getKey()).words /= words_count;
             pages.get(entry.getKey()).title_score /= words_count;
 
+            // Score.
+            double score =  (entry.getValue().unstemmed_score * weight_unstemmed+
+                        entry.getValue().words * weight_words+
+                                entry.getValue().title_score * weight_title);
+
+            mp.put(entry.getKey(), score);
+
+            sorted_urls.add(entry.getKey());
             // Logging.
-            System.out.println(entry.getKey());
-            System.out.println(" unstemmed_score " +
-                    entry.getValue().unstemmed_score + " count score : " + entry.getValue().words
-                    + " title score : " + entry.getValue().title_score);
+//            System.out.println(entry.getKey());
+//            System.out.println(" unstemmed_score " +
+//                    entry.getValue().unstemmed_score + " count score : " + entry.getValue().words
+//                    + " title score : " + entry.getValue().title_score);
 
         }
 
+        sorted_urls.sort(Comparator.comparing(mp::get).reversed());
+
+//        for(String key : mp.descendingKeySet()){
+//            System.out.println("value of " + key + " is " + mp.get(key));
+//        }
+
+
+        FindIterable<Document> top_pages = page_collection.find(Filters.in("url",sorted_urls));
+
+
+        JSONArray jsonarray = new JSONArray();
+
+        for(Document top_page : top_pages)
+        {
+
+            JSONObject object = new JSONObject();
+            String url = top_page.getString("url");
+            StringBuilder snippet = new StringBuilder();
+
+            StringBuilder title = new StringBuilder();
+            List<String> title_arr = top_page.get("title", List.class);
+            for( String s : title_arr)
+                title.append(s);
+
+            List<Integer> curr_page_pos = page_positions.get(url);
+
+            List<String> body = top_page.get("body", List.class);
+
+            for(int pos : curr_page_pos)
+            {
+
+                for(int i = Math.max(0, pos-5); i<Math.min(pos+5, body.size()); i++)
+                {
+
+                    snippet.append(body.get(i)).append(" ");
+
+                }
+                snippet.append("....");
+            }
+            object.put("url", ""+url+"");
+            object.put("title",""+title+"");
+            object.put("snippet",""+snippet+"");
+            jsonarray.add(object);
+
+        }
+        for(String url : sorted_urls)
+        {
+
+            //System.out.println("value of " + url + " is " + mp.get(url));
+
+            // Get page with this url.
+
+
+        }
+
+        return jsonarray.toJSONString();
     }
 
     private String stem(String s) {

@@ -48,63 +48,66 @@ public class main {
          Tesing search-start
 
          */
-//
-//        Search.setInitialParameters(mongo, credential, database, stopWordSet);
-//
-//        String search_text = "Bounty";
-//
-//        Search client = new Search();
-//
-//        client.phrase_search(search_text);
-//
 
+
+        Search.setInitialParameters(mongo, credential, database, stopWordSet);
+
+        String search_text = "classified";
+
+        Search client = new Search();
+
+        //String result = client.phrase_search(search_text);
+        String normal_search_result =  client.normal_search(search_text);
+        System.out.println(normal_search_result);
+
+        //System.out.println(result);
         /*
             Testing search-end
-         */
-        // TODO: then when a document is processed set it's status to 2, not sure when should this be done and should it be done by bulk or single document
-
-       MongoCollection<Document> collection;
-
-        // Initialize Indexer connection parameters and stop words.
-       // Indexer.setInitialParameters(mongo, credential, database, stopWordSet);
-
-        collection = database.getCollection("pages");
-
-        // Thread pool for indexers.
-        ExecutorService indexers_thread_pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        FindIterable<Document> result = collection.find(Filters.eq("status", 0));
-
-        // Set status to 1, (caught).
-        Bson updates = Updates.set("status",1);
-
-        // Holding urls to bee updated.
-        ArrayList<String> urls_to_update = new ArrayList<String>();
-
-        int count = 0;
-        for(Document doc : result)
-        {
-
-            urls_to_update.add(doc.getString("url"));
-            indexers_thread_pool.execute(new Indexer(doc, mongo, credential, database, stopWordSet));
-            System.out.println("documents indexed : "+count++);
-        }
-
-
-        indexers_thread_pool.shutdown();
-        try {
-            indexers_thread_pool.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-
-        } catch (InterruptedException e) {
-
-        }
-        // Url update filer.
-        Bson filter = Filters.in("url",urls_to_update);
-
-        // Update status of pages set it to indexed.
-        collection.updateMany(filter,updates);
-
-
-        System.out.println("Indexer finished");
+//         */
+//        // TODO: then when a document is processed set it's status to 2, not sure when should this be done and should it be done by bulk or single document
+//
+//       MongoCollection<Document> collection;
+//
+//        // Initialize Indexer connection parameters and stop words.
+//       // Indexer.setInitialParameters(mongo, credential, database, stopWordSet);
+//
+//        collection = database.getCollection("pages");
+//
+//        // Thread pool for indexers.
+//        ExecutorService indexers_thread_pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+//        FindIterable<Document> result = collection.find(Filters.eq("status", 0));
+//
+//        // Set status to 1, (caught).
+//        Bson updates = Updates.set("status",1);
+//
+//        // Holding urls to bee updated.
+//        ArrayList<String> urls_to_update = new ArrayList<String>();
+//
+//        int count = 0;
+//        for(Document doc : result)
+//        {
+//
+//            urls_to_update.add(doc.getString("url"));
+//            indexers_thread_pool.execute(new Indexer(doc, mongo, credential, database, stopWordSet));
+//           // System.out.println("documents indexed : "+count++);
+//        }
+//
+//
+//        indexers_thread_pool.shutdown();
+//        try {
+//            indexers_thread_pool.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+//
+//        } catch (InterruptedException e) {
+//
+//        }
+//        // Url update filer.
+//        Bson filter = Filters.in("url",urls_to_update);
+//
+//        // Update status of pages set it to indexed.
+//        collection.updateMany(filter,updates);
+//
+//
+//        System.out.println("Indexer finished");
 
 
     }

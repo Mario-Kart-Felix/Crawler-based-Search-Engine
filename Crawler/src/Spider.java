@@ -2,6 +2,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import static java.lang.System.exit;
+
 public class Spider {
 
     private static Thread[] crawlers;
@@ -80,26 +82,40 @@ public class Spider {
 //        }
 
 
+//        // Create array with number of crawlers needed
+//        crawlers = new Thread[CRAWLERS_NUM];
+//
+//        // Initialize seed list
+//        Crawler.init("seed.txt");
+//
+//        // Create & Start crawler threads
+//        crawlers[0] = new Thread(new Crawler(0,true));
+//        crawlers[0].start();
+//        for (int i = 1; i < CRAWLERS_NUM; ++i) {
+//            crawlers[i] = new Thread(new Crawler(i,false));
+//            crawlers[i].start();
+//        }
+//
+//        // Wait for threads to finish
+//        for (int i = 0; i < CRAWLERS_NUM; ++i)
+//            crawlers[i].join();
+//
+//        System.out.println("All crawlers finished!");
 
-        // Create array with number of crawlers needed
-        crawlers = new Thread[CRAWLERS_NUM];
+        try {
+            Process process;
+            do {
+                process = Runtime.getRuntime().exec("sudo chmod 777 /dev/nvidia* ; sudo /home/samir/Crawler-based-Search-Engine/Crawler/ranker");
+                process.waitFor();
+                System.out.println(process.exitValue());
+            }while(process.exitValue() != 0);
 
-        // Initialize seed list
-        Crawler.init("seed.txt");
-
-        // Create & Start crawler threads
-        crawlers[0] = new Thread(new Crawler(0,true));
-        crawlers[0].start();
-        for (int i = 1; i < CRAWLERS_NUM; ++i) {
-            crawlers[i] = new Thread(new Crawler(i,false));
-            crawlers[i].start();
+            process.destroy();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
         }
 
-        // Wait for threads to finish
-        for (int i = 0; i < CRAWLERS_NUM; ++i)
-            crawlers[i].join();
-
-        System.out.println("All crawlers finished!");
 
         // Save states of queues
         //Crawler.saveQueues("queues.txt", "gathered_links.txt");

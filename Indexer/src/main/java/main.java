@@ -49,7 +49,11 @@ public class main {
 
          */
 
+<<<<<<< HEAD
 
+=======
+//
+>>>>>>> 16e4f77b53c808c78aa94dc4beb7d33b9fe52222
 //        Search.setInitialParameters(mongo, credential, database, stopWordSet);
 //
 //        String search_text = "classified";
@@ -63,8 +67,13 @@ public class main {
         //System.out.println(result);
         /*
             Testing search-end
+<<<<<<< HEAD
          */
         // TODO: then when a document is processed set it's status to 2, not sure when should this be done and should it be done by bulk or single document
+=======
+//         */
+//        // TODO: then when a document is processed set it's status to 2, not sure when should this be done and should it be done by bulk or single document
+>>>>>>> 16e4f77b53c808c78aa94dc4beb7d33b9fe52222
 
        MongoCollection<Document> collection;
 
@@ -74,7 +83,11 @@ public class main {
         collection = database.getCollection("pages");
 
         // Thread pool for indexers.
+<<<<<<< HEAD
         ExecutorService indexers_thread_pool = Executors.newFixedThreadPool(50);
+=======
+        ExecutorService indexers_thread_pool = Executors.newFixedThreadPool(60);
+>>>>>>> 16e4f77b53c808c78aa94dc4beb7d33b9fe52222
         FindIterable<Document> result = collection.find(Filters.eq("status", 0));
 
         // Set status to 1, (caught).

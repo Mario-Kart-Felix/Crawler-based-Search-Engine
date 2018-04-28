@@ -70,7 +70,7 @@ public class Indexer implements Runnable {
 
             //System.out.println(" finished 1 doc");
             //addDocument(documents_to_process.getString("body"), documents_to_process.getString("url"));
-            System.out.println("documenets indexed " + i.getAndIncrement());
+            System.out.println("documents indexed " + i.getAndIncrement());
 
 
     }

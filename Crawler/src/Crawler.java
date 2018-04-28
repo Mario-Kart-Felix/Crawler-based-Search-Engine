@@ -32,8 +32,9 @@ public class Crawler implements Runnable {
     //public static Queue<String> q = new LinkedList<String>();
     public static Deque<String> q = new ConcurrentLinkedDeque<>();
     public static Set visited_links = new HashSet();
+    public static Set processed = new HashSet();
     public static ConcurrentHashMap robots = new ConcurrentHashMap<String, RobotsTxt>();
-    public static ConcurrentHashMap<String, ArrayList<String>> webGraph = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<String, HashSet<String>> webGraph = new ConcurrentHashMap<>();
     public static ConcurrentHashMap domainDepth = new ConcurrentHashMap<String,Integer>();
     private static MongoClient mongoClient;
     private static MongoCredential credintials;
@@ -80,7 +81,7 @@ public class Crawler implements Runnable {
                         if (webGraph.containsKey(key)) {
                             webGraph.get(key).add(value);
                         } else {
-                            webGraph.put(key, new ArrayList<>(Arrays.asList(value)));
+                            webGraph.put(key, new HashSet<>(Arrays.asList(value)));
                         }
                     }
                 }
@@ -147,12 +148,19 @@ public class Crawler implements Runnable {
 
                 out_file = new PrintWriter("web_graph.txt");
 
-                for (Map.Entry<String, ArrayList<String>> entry : webGraph.entrySet()) {
+                for (Map.Entry<String, HashSet<String>> entry : webGraph.entrySet()) {
                     String key = entry.getKey();
-                    ArrayList<String> value = entry.getValue();
-                    out_file.println("z\n" + key);
-                    for (String link : value)
-                        out_file.println(link);
+                    HashSet<String> value = entry.getValue();
+                    int cnt = 0;
+                    StringBuilder str = new StringBuilder();
+                    for (String link : value) {
+                        if(processed.contains((link))) {
+                            cnt++;
+                            str.append(link).append("\n");
+                        }
+                    }
+                    out_file.println("z " + cnt + "\n" + key);
+                    out_file.print(str);
                 }
 
                 out_file.close();
@@ -184,13 +192,62 @@ public class Crawler implements Runnable {
         }
     }
 
-    private void getNewSeedList() {
+    public static void getNewSeedList() {
 
         /*
             Call Ranker function to rank pages and get the top X links
             to make the new seed list.
-         */
+        */
 
+        Set links = new HashSet();
+        String abs;
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(new File("ranks.txt")));
+            PrintWriter out_file = new PrintWriter("seed2.txt");
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+
+                // Prepend https or http if not found in url
+                if (!(line.startsWith("http://") || (line.startsWith("https://")))) {
+                    line = "https://" + line;
+                }
+
+                try {
+
+                    // If the URL is in perfect format
+                    URL aURL = new URL(line);
+                    abs = aURL.getHost();
+
+                } catch (Exception e) {
+
+                    // If the URL doesn't begin with http or https then the previous block will throw an exception
+                    // and splitting on the / means that we get the domain name
+                    String[] tokens = line.split("/");
+                    abs = tokens[0];
+                }
+
+                if(!links.contains(abs))
+                {
+                    links.add(abs);
+                    out_file.println(abs);
+                }
+
+                // Enough links
+                if(links.size() == 20)
+                    break;
+
+                // rank score line -> ignore it
+                line = bufferedReader.readLine();
+            }
+
+            bufferedReader.close();
+            out_file.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void crawl() throws IOException {
@@ -251,6 +308,8 @@ public class Crawler implements Runnable {
                     processed_links++;
                 }
 
+                processed.add(url);
+
                 System.out.println("Success: " + url);
 
                 // Parse the HTML page
@@ -295,9 +354,11 @@ public class Crawler implements Runnable {
                             continue;
 
                         if (webGraph.containsKey(url)) {
-                            webGraph.get(url).add(sanitizedURL);
+                            if(!sanitizedURL.equals(url)) {
+                                webGraph.get(url).add(sanitizedURL);
+                            }
                         } else {
-                            webGraph.put(url, new ArrayList<>(Arrays.asList(sanitizedURL)));
+                            webGraph.put(url, new HashSet<>(Arrays.asList(sanitizedURL)));
                         }
 
                         String rel = getRel(link.attr("rel:href"));

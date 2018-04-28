@@ -3,15 +3,21 @@ $.get("http://localhost:4567/search/" + localStorage.getItem("search"), function
     console.log(JSON.parse(succ));
     results = document.getElementById("resultsPage");
     succ=JSON.parse(succ);
-    console.log(JSON.stringify(succ));
     for(obj in succ){
         l="<div class=\"search-results\">"+
-            "<h2><a href=\"#\">"+obj["title"]+"</a></h2>"+
-        "<p><a href=\"#\" class=\"link\">"+obj.url+"</a><p>"+
-        "<p class=\"summary\">"+obj.snippet+"</p>"+
+            "<h2><a href=\""+succ[obj].url+"\">"+succ[obj].title+"</a></h2>"+
+        "<a><a style = \"color:green\">"+succ[obj].url+"</a></a>"+
+        "<p class=\"summary\">"+succ[obj].snippet+"</p>"+
         "</div>";
-        results.append(l);
+        $('#resultsPage').append(l);
+        // $('#resultsPage').append("<div class = \"new_row\">"+
+        //     "<label>country </label>"+
+        //     "<input type= \"input\" name = \"country\">"+
+        //     "<label>IPs </label>"+
+        //     "<input type= \"input\" name = \"IPs\">"+
+        //     "</div>");
     }
+
     alert( succ );
 });
 

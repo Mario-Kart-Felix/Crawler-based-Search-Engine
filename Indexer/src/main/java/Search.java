@@ -169,7 +169,7 @@ public class Search {
                             snippet.append(body.get(i)).append(" ");
                         }
                         JSONObject object = new JSONObject();
-                        
+
                         object.put("url", ""+url+"");
                         object.put("title",""+title+"");
                         object.put("snippet",""+snippet+"");

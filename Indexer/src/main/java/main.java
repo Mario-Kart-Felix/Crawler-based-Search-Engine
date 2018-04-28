@@ -51,20 +51,20 @@ public class main {
 
          */
 
-        Search.setInitialParameters(mongo, credential, database, stopWordSet);
+       /* Search.setInitialParameters(mongo, credential, database, stopWordSet);
 
         String search_text = "Bounty";
 
         Search client = new Search();
 
         client.phrase_search(search_text);
-
+        */
 
         /*
             Testing search-end
          */
         // TODO: then when a document is processed set it's status to 2, not sure when should this be done and should it be done by bulk or single document
-       /*
+
        MongoCollection<Document> collection;
 
         // Initialize Indexer connection parameters and stop words.
@@ -101,7 +101,7 @@ public class main {
         indexers_thread_pool.shutdown();
 
         System.out.println("Indexer finished");
-*/
+
 
     }
     private static void connectDB() {

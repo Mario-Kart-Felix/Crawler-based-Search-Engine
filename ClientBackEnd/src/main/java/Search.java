@@ -1,16 +1,19 @@
 import com.mongodb.*;
 import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.*;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
 import org.bson.Document;
+import org.json.simple.JSONObject;
 import org.tartarus.snowball.SnowballStemmer;
 import org.tartarus.snowball.ext.englishStemmer;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+//import org.apache.commons.text.similarity;
 public class Search {
 
     private static MongoClient mongo;
@@ -33,7 +36,32 @@ public class Search {
         pattern = Pattern.compile("[^a-z A-Z]");
 
     }
+    public void add_suggestion(String sugg){
+        MongoCollection<Document> collection;
+        collection = database.getCollection("suggestions");
+        collection.insertOne(new Document("suggestion",sugg));
+    }
+    public String get_suggestions(String sugg){
+        MongoCollection<Document> collection;
+        collection = database.getCollection("suggestions");
+        FindIterable<Document>documents= collection.find();
+        ArrayList<String>words=new ArrayList<>();
+        for(Document doc : documents){
+            String suggestion=(String)doc.get("suggestion");
+            words.add(suggestion);
+            //int val = FuzzySearch.weightedRatio(sugg,suggestion);
+        }
 
+        words.sort(Comparator.comparingInt((String z) -> FuzzySearch.weightedRatio(sugg, z)));
+
+        JSONObject data = new JSONObject();
+
+        if(words.size()>10)
+        data.put("Suggestions", words.subList(0,10));
+        else
+            data.put("Suggestions",words);
+        return data.toString();
+    }
     public void phrase_search(String search_text) {
 
         // Split words to search for each word independently.

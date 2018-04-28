@@ -37,3 +37,4 @@ ClientBackEnd/.idea
 ClientBackend/.idea
 */out/
 out/
+*.class

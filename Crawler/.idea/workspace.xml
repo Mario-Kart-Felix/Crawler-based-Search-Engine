@@ -1,124 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="882e71e7-7316-481c-bc04-53c370de950e" name="Default" comment="" />
-    <ignored path="$PROJECT_DIR$/out/" />
+    <list default="true" id="108a9ac0-fb86-41b3-ae8e-b23ce23e09f6" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Crawler$Spider.coverage" NAME="Spider Coverage Results" MODIFIED="1521575813157" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Crawler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Crawler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3456">
-              <caret line="353" selection-start-line="353" selection-end-line="353" />
-              <folding>
-                <element signature="method#Crawler#0;class#Crawler#0" />
-                <element signature="method#init#0;class#Crawler#0" />
-                <element signature="method#getSeedList#0;class#Crawler#0" />
-                <element signature="method#run#0;class#Crawler#0" />
-                <element signature="method#saveDaemon#0;class#Crawler#0" />
-                <element signature="method#getNewSeedList#0;class#Crawler#0" />
-                <element signature="method#trim#0;class#Crawler#0" />
-                <element signature="method#getAbs#0;class#Crawler#0" />
-                <element signature="method#getRel#0;class#Crawler#0" />
-                <element signature="method#getServerTime#0;class#Crawler#0" />
-                <element signature="method#normalizeUrl#0;class#Crawler#0" />
-                <element signature="method#finalize#0;class#Crawler#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Spider.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Spider.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="96" lean-forward="true" selection-start-line="96" selection-end-line="96" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="seed.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/seed.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="12" column="16" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>http://mail.eng.cu.edu.eg</find>
-      <find>http://eng.cu.edu.eg/ar/gal/eng/</find>
-      <find>http://theses.cu.edu.eg/eulc_v5/libraries/start.aspx?</find>
-      <find>http://eng.cu.edu.eg/ar/gal/genaral-images/</find>
-      <find>http://eng.cu.edu.eg/ar/gal/genaral-images</find>
-      <find>http://eng.cu.edu.eg/ar/gal/galler1/</find>
-      <find>system</find>
-      <find>pom</find>
-      <find>robot</find>
-      <find>robots</find>
-      <find>Thread destroyed</find>
-      <find>destroy</find>
-      <find>destroyed</find>
-      <find>visitedLinks</find>
-      <find>CRAWLERS_NUM</find>
-      <find>All</find>
-      <find>exited</find>
-      <find>System.out</find>
-      <find>`</find>
-      <find>---------100</find>
-      <find>here here</find>
-      <find>-----------------------</find>
-      <find>----------</find>
-      <find>/</find>
-      <find>local</find>
-      <find>URI</find>
-      <find>todo</find>
-      <find>Print</find>
-      <find>z</find>
-      <find>catch</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>visited_links</replace>
-    </replaceStrings>
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/src/Main.java" />
-        <option value="$PROJECT_DIR$/src/seed.txt" />
-        <option value="$PROJECT_DIR$/src/com/panforge/robotstxt/RobotsTxtReader.java" />
-        <option value="$PROJECT_DIR$/RobotsTxt/pom.xml" />
-        <option value="$PROJECT_DIR$/src/Spider.java" />
-        <option value="$PROJECT_DIR$/gathered_links.txt" />
-        <option value="$PROJECT_DIR$/queues.txt" />
-        <option value="$PROJECT_DIR$/src/Crawler.java" />
-        <option value="$PROJECT_DIR$/seed.txt" />
-      </list>
-    </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
@@ -130,16 +19,17 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="24" />
+    <option name="y" value="52" />
     <option name="width" value="1366" />
-    <option name="height" value="744" />
+    <option name="height" value="716" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
@@ -152,27 +42,14 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="Downloaded.Files.Path.Enabled" value="true" />
-    <property name="Repository.Attach.JavaDocs" value="true" />
-    <property name="Repository.Attach.Sources" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
-  </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-    </key>
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -186,24 +63,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Spider">
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-    </configuration>
-    <configuration name="Crawler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Crawler" />
-      <module name="Crawler" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    </configuration>
-    <configuration name="Spider" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Spider" />
-      <module name="Crawler" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    </configuration>
-    <configuration name="Unnamed" type="Application" factoryName="Application">
-      <module name="Crawler" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-    </configuration>
+  <component name="RunManager">
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
@@ -245,107 +105,54 @@
       <properties />
       <listeners />
     </configuration>
-    <configuration default="true" type="Remote" factoryName="Remote">
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="5005" />
-    </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
-      <module name="" />
-      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
-      <option name="PROGRAM_PARAMETERS" />
-      <predefined_log_file id="idea.log" enabled="true" />
-    </configuration>
-    <list>
-      <item itemvalue="Application.Unnamed" />
-      <item itemvalue="Application.Crawler" />
-      <item itemvalue="Application.Spider" />
-    </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.Spider" />
-        <item itemvalue="Application.Crawler" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="882e71e7-7316-481c-bc04-53c370de950e" name="Default" comment="" />
-      <created>1520347454872</created>
+      <changelist id="108a9ac0-fb86-41b3-ae8e-b23ce23e09f6" name="Default" comment="" />
+      <created>1524929024016</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1520347454872</updated>
-      <workItem from="1520347461023" duration="4805000" />
-      <workItem from="1520448116109" duration="17805000" />
-      <workItem from="1520512373677" duration="8153000" />
-      <workItem from="1521027242828" duration="13568000" />
-      <workItem from="1521115728569" duration="13749000" />
-      <workItem from="1521208296522" duration="393000" />
-      <workItem from="1521247407514" duration="41000" />
-      <workItem from="1521555360621" duration="8669000" />
-      <workItem from="1521570966379" duration="6178000" />
-      <workItem from="1521577806825" duration="1414000" />
-      <workItem from="1521964209478" duration="7939000" />
-      <workItem from="1521997252193" duration="4566000" />
-      <workItem from="1522073167879" duration="6668000" />
-      <workItem from="1522316381654" duration="6305000" />
-      <workItem from="1522421359514" duration="4143000" />
-      <workItem from="1522509443925" duration="20417000" />
-      <workItem from="1522532245613" duration="953000" />
-      <workItem from="1522534901575" duration="1557000" />
-      <workItem from="1522545250376" duration="1899000" />
-      <workItem from="1522578343755" duration="720000" />
-      <workItem from="1523913671844" duration="3442000" />
-      <workItem from="1524518523114" duration="4358000" />
-      <workItem from="1524566313076" duration="1451000" />
-      <workItem from="1524600690657" duration="667000" />
-      <workItem from="1524842531260" duration="3105000" />
-      <workItem from="1524878185923" duration="3237000" />
-      <workItem from="1524906784753" duration="1996000" />
+      <updated>1524929024016</updated>
+      <workItem from="1524929026436" duration="763000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="148198000" />
+    <option name="totallyTimeSpent" value="763000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="24" width="1366" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Palette" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Palette&#9;" order="8" />
-      <window_info id="Image Layers" order="7" />
-      <window_info anchor="right" id="Capture Analysis" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.511713" side_tool="true" weight="0.32732734" />
-      <window_info anchor="right" id="Maven Projects" order="4" />
-      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.48828697" weight="0.3255086" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.3286385" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14242424" />
-      <window_info anchor="right" id="Database" order="5" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.0" />
+      <window_info anchor="right" id="Palette&#9;" />
+      <window_info id="Image Layers" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="right" id="Maven Projects" />
+      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info id="Capture Tool" />
+      <window_info id="Designer" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info anchor="right" id="Database" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info id="UI Designer" order="4" />
-      <window_info anchor="right" id="Theme Preview" order="7" />
-      <window_info id="Favorites" order="5" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3993994" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="7.320644E-4" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info id="UI Designer" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info id="Learn" order="6" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32946146" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.3284055" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -353,549 +160,5 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <option name="time" value="3" />
-    </breakpoint-manager>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Crawler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6354">
-          <caret line="353" selection-start-line="353" selection-end-line="353" />
-          <folding>
-            <element signature="method#Crawler#0;class#Crawler#0" />
-            <element signature="method#init#0;class#Crawler#0" />
-            <element signature="method#getSeedList#0;class#Crawler#0" />
-            <element signature="method#run#0;class#Crawler#0" />
-            <element signature="method#saveDaemon#0;class#Crawler#0" />
-            <element signature="method#getNewSeedList#0;class#Crawler#0" />
-            <element signature="method#trim#0;class#Crawler#0" />
-            <element signature="method#getAbs#0;class#Crawler#0" />
-            <element signature="method#getRel#0;class#Crawler#0" />
-            <element signature="method#getServerTime#0;class#Crawler#0" />
-            <element signature="method#normalizeUrl#0;class#Crawler#0" />
-            <element signature="method#finalize#0;class#Crawler#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/seed.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="16" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Spider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1890">
-          <caret line="105" selection-start-line="105" selection-end-line="105" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Crawler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3222">
-          <caret line="200" column="40" lean-forward="true" selection-start-line="200" selection-start-column="40" selection-end-line="200" selection-end-column="40" />
-          <folding>
-            <element signature="method#Crawler#0;class#Crawler#0" />
-            <element signature="method#init#0;class#Crawler#0" />
-            <element signature="method#getSeedList#0;class#Crawler#0" />
-            <element signature="method#run#0;class#Crawler#0" />
-            <element signature="method#saveDaemon#0;class#Crawler#0" />
-            <element signature="method#getNewSeedList#0;class#Crawler#0" />
-            <element signature="method#trim#0;class#Crawler#0" />
-            <element signature="method#getAbs#0;class#Crawler#0" />
-            <element signature="method#getRel#0;class#Crawler#0" />
-            <element signature="method#getServerTime#0;class#Crawler#0" />
-            <element signature="method#normalizeUrl#0;class#Crawler#0" />
-            <element signature="method#finalize#0;class#Crawler#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Spider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1854">
-          <caret line="105" selection-start-line="105" selection-end-line="105" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/seed.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="14" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/seed.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="14" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Crawler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="738">
-          <caret line="66" column="11" selection-start-line="66" selection-start-column="11" selection-end-line="68" selection-end-column="22" />
-          <folding>
-            <element signature="method#Crawler#0;class#Crawler#0" />
-            <element signature="method#init#0;class#Crawler#0" />
-            <element signature="method#getSeedList#0;class#Crawler#0" />
-            <element signature="method#run#0;class#Crawler#0" />
-            <element signature="method#saveDaemon#0;class#Crawler#0" />
-            <element signature="method#getNewSeedList#0;class#Crawler#0" />
-            <element signature="method#trim#0;class#Crawler#0" />
-            <element signature="method#getAbs#0;class#Crawler#0" />
-            <element signature="method#getRel#0;class#Crawler#0" />
-            <element signature="method#getServerTime#0;class#Crawler#0" />
-            <element signature="method#normalizeUrl#0;class#Crawler#0" />
-            <element signature="method#finalize#0;class#Crawler#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Spider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1170">
-          <caret line="65" column="40" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/seed.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="14" lean-forward="true" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Crawler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="method#Crawler#0;class#Crawler#0" />
-            <element signature="method#init#0;class#Crawler#0" />
-            <element signature="method#getSeedList#0;class#Crawler#0" />
-            <element signature="method#run#0;class#Crawler#0" />
-            <element signature="method#saveDaemon#0;class#Crawler#0" />
-            <element signature="method#getNewSeedList#0;class#Crawler#0" />
-            <element signature="method#trim#0;class#Crawler#0" />
-            <element signature="method#getAbs#0;class#Crawler#0" />
-            <element signature="method#getRel#0;class#Crawler#0" />
-            <element signature="method#getServerTime#0;class#Crawler#0" />
-            <element signature="method#normalizeUrl#0;class#Crawler#0" />
-            <element signature="method#finalize#0;class#Crawler#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Spider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1026">
-          <caret line="57" column="28" selection-start-line="57" selection-start-column="28" selection-end-line="57" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Crawler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="method#Crawler#0;class#Crawler#0" />
-            <element signature="method#init#0;class#Crawler#0" />
-            <element signature="method#getSeedList#0;class#Crawler#0" />
-            <element signature="method#run#0;class#Crawler#0" />
-            <element signature="method#saveDaemon#0;class#Crawler#0" />
-            <element signature="method#getNewSeedList#0;class#Crawler#0" />
-            <element signature="method#trim#0;class#Crawler#0" />
-            <element signature="method#getAbs#0;class#Crawler#0" />
-            <element signature="method#getRel#0;class#Crawler#0" />
-            <element signature="method#getServerTime#0;class#Crawler#0" />
-            <element signature="method#normalizeUrl#0;class#Crawler#0" />
-            <element signature="method#finalize#0;class#Crawler#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Spider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="8" column="40" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/seed.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="23" lean-forward="true" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Crawler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="936">
-          <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
-          <folding>
-            <element signature="method#Crawler#0;class#Crawler#0" />
-            <element signature="method#init#0;class#Crawler#0" />
-            <element signature="method#getSeedList#0;class#Crawler#0" />
-            <element signature="method#run#0;class#Crawler#0" />
-            <element signature="method#saveDaemon#0;class#Crawler#0" />
-            <element signature="method#getNewSeedList#0;class#Crawler#0" />
-            <element signature="method#trim#0;class#Crawler#0" />
-            <element signature="method#getAbs#0;class#Crawler#0" />
-            <element signature="method#getRel#0;class#Crawler#0" />
-            <element signature="method#getServerTime#0;class#Crawler#0" />
-            <element signature="method#normalizeUrl#0;class#Crawler#0" />
-            <element signature="method#finalize#0;class#Crawler#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Spider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="864">
-          <caret line="59" column="29" selection-start-line="59" selection-start-column="29" selection-end-line="59" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/seed.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="14616">
-          <caret line="812" lean-forward="true" selection-start-line="812" selection-end-line="812" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Crawler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="method#Crawler#0;class#Crawler#0" />
-            <element signature="method#init#0;class#Crawler#0" />
-            <element signature="method#getSeedList#0;class#Crawler#0" />
-            <element signature="method#run#0;class#Crawler#0" />
-            <element signature="method#saveDaemon#0;class#Crawler#0" />
-            <element signature="method#getNewSeedList#0;class#Crawler#0" />
-            <element signature="method#trim#0;class#Crawler#0" />
-            <element signature="method#getAbs#0;class#Crawler#0" />
-            <element signature="method#getRel#0;class#Crawler#0" />
-            <element signature="method#getServerTime#0;class#Crawler#0" />
-            <element signature="method#normalizeUrl#0;class#Crawler#0" />
-            <element signature="method#finalize#0;class#Crawler#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Spider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1152">
-          <caret line="64" column="21" lean-forward="true" selection-start-line="64" selection-start-column="21" selection-end-line="64" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/seed.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="18" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Crawler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="47" selection-start-line="47" selection-end-line="47" />
-          <folding>
-            <element signature="method#Crawler#0;class#Crawler#0" />
-            <element signature="method#init#0;class#Crawler#0" />
-            <element signature="method#getSeedList#0;class#Crawler#0" />
-            <element signature="method#run#0;class#Crawler#0" />
-            <element signature="method#saveDaemon#0;class#Crawler#0" />
-            <element signature="method#getNewSeedList#0;class#Crawler#0" />
-            <element signature="method#trim#0;class#Crawler#0" />
-            <element signature="method#getAbs#0;class#Crawler#0" />
-            <element signature="method#getRel#0;class#Crawler#0" />
-            <element signature="method#getServerTime#0;class#Crawler#0" />
-            <element signature="method#normalizeUrl#0;class#Crawler#0" />
-            <element signature="method#finalize#0;class#Crawler#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/seed.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="23" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Spider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="990">
-          <caret line="63" column="58" selection-start-line="63" selection-start-column="58" selection-end-line="63" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Crawler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="39" selection-start-line="39" selection-end-line="44" selection-end-column="55" />
-          <folding>
-            <element signature="method#Crawler#0;class#Crawler#0" />
-            <element signature="method#init#0;class#Crawler#0" />
-            <element signature="method#getSeedList#0;class#Crawler#0" />
-            <element signature="method#run#0;class#Crawler#0" />
-            <element signature="method#saveDaemon#0;class#Crawler#0" />
-            <element signature="method#getNewSeedList#0;class#Crawler#0" />
-            <element signature="method#trim#0;class#Crawler#0" />
-            <element signature="method#getAbs#0;class#Crawler#0" />
-            <element signature="method#getRel#0;class#Crawler#0" />
-            <element signature="method#getServerTime#0;class#Crawler#0" />
-            <element signature="method#normalizeUrl#0;class#Crawler#0" />
-            <element signature="method#finalize#0;class#Crawler#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/seed.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="31" lean-forward="true" selection-start-line="2" selection-start-column="31" selection-end-line="2" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Spider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="51" column="6" lean-forward="true" selection-start-line="51" selection-start-column="6" selection-end-line="51" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Crawler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1332">
-          <caret line="85" column="31" selection-start-line="85" selection-start-column="16" selection-end-line="85" selection-end-column="31" />
-          <folding>
-            <element signature="method#Crawler#0;class#Crawler#0" />
-            <element signature="method#init#0;class#Crawler#0" />
-            <element signature="method#getSeedList#0;class#Crawler#0" />
-            <element signature="method#run#0;class#Crawler#0" />
-            <element signature="method#saveDaemon#0;class#Crawler#0" />
-            <element signature="method#getNewSeedList#0;class#Crawler#0" />
-            <element signature="method#trim#0;class#Crawler#0" />
-            <element signature="method#getAbs#0;class#Crawler#0" />
-            <element signature="method#getRel#0;class#Crawler#0" />
-            <element signature="method#getServerTime#0;class#Crawler#0" />
-            <element signature="method#normalizeUrl#0;class#Crawler#0" />
-            <element signature="method#finalize#0;class#Crawler#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Spider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="17" column="42" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/seed.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="31" selection-start-line="2" selection-start-column="31" selection-end-line="2" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/panforge/robotstxt/RobotsTxtReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3060">
-          <caret line="170" lean-forward="true" selection-start-line="170" selection-end-line="170" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Crawler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="method#Crawler#0;class#Crawler#0" />
-            <element signature="method#init#0;class#Crawler#0" />
-            <element signature="method#getSeedList#0;class#Crawler#0" />
-            <element signature="method#run#0;class#Crawler#0" />
-            <element signature="method#saveDaemon#0;class#Crawler#0" />
-            <element signature="method#getNewSeedList#0;class#Crawler#0" />
-            <element signature="method#trim#0;class#Crawler#0" />
-            <element signature="method#getAbs#0;class#Crawler#0" />
-            <element signature="method#getRel#0;class#Crawler#0" />
-            <element signature="method#getServerTime#0;class#Crawler#0" />
-            <element signature="method#normalizeUrl#0;class#Crawler#0" />
-            <element signature="method#finalize#0;class#Crawler#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/util/Queue.class" />
-    <entry file="file://$PROJECT_DIR$/src/Spider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="17" column="16" lean-forward="true" selection-start-line="17" selection-start-column="16" selection-end-line="17" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/seed.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="1" selection-start-line="1" selection-end-line="2" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/jsoup-1.11.2-sources.jar!/org/jsoup/Connection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="300" column="37" selection-start-line="300" selection-start-column="26" selection-end-line="300" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/util/Queue.class" />
-    <entry file="file://$PROJECT_DIR$/src/com/panforge/robotstxt/RobotsTxtReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="32" column="5" lean-forward="true" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RobotsTxt/pom.xml" />
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/lang/Runnable.class" />
-    <entry file="file://$PROJECT_DIR$/queue.txt" />
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/util/function/Consumer.class" />
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/util/Iterator.class" />
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/util/Deque.class" />
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/lang/Thread.class" />
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/net/URI.class" />
-    <entry file="jar://$USER_HOME$/programs/jdk-9.0.4/lib/src.zip!/java.base/java/util/ArrayList.java" />
-    <entry file="file://$PROJECT_DIR$/seed.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="16" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Crawler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3456">
-          <caret line="353" selection-start-line="353" selection-end-line="353" />
-          <folding>
-            <element signature="method#Crawler#0;class#Crawler#0" />
-            <element signature="method#init#0;class#Crawler#0" />
-            <element signature="method#getSeedList#0;class#Crawler#0" />
-            <element signature="method#run#0;class#Crawler#0" />
-            <element signature="method#saveDaemon#0;class#Crawler#0" />
-            <element signature="method#getNewSeedList#0;class#Crawler#0" />
-            <element signature="method#trim#0;class#Crawler#0" />
-            <element signature="method#getAbs#0;class#Crawler#0" />
-            <element signature="method#getRel#0;class#Crawler#0" />
-            <element signature="method#getServerTime#0;class#Crawler#0" />
-            <element signature="method#normalizeUrl#0;class#Crawler#0" />
-            <element signature="method#finalize#0;class#Crawler#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Spider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="96" lean-forward="true" selection-start-line="96" selection-end-line="96" />
-        </state>
-      </provider>
-    </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>No facets are configured</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <last-edited>mpj</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
-        <settings>
-          <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>Crawler</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-                <option value="0.6" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectJDKs.UI">
-        <settings>
-          <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
-          <last-edited>org.mongodb:mongo-java-driver:3.6.1</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
   </component>
 </project>

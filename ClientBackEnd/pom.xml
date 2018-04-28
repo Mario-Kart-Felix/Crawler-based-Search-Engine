@@ -46,5 +46,16 @@
             <artifactId>snowball-stemmer</artifactId>
             <version>1.3.0.581.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.airavata/levenshtein-distance-service -->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.airavata</groupId>-->
+            <!--<artifactId>levenshtein-distance-service</artifactId>-->
+            <!--<version>0.2-incubating</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>me.xdrop</groupId>
+            <artifactId>fuzzywuzzy</artifactId>
+            <version>1.1.10</version>
+        </dependency>
     </dependencies>
 </project>

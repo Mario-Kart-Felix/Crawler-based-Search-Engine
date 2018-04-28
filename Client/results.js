@@ -18,6 +18,18 @@ $.get("http://localhost:4567/search/" + localStorage.getItem("search"), function
         //     "</div>");
     }
 
-    alert( succ );
 });
 
+
+sendDelayedKeyPress = function (key) {
+    console.log("first");
+    document.getElementById("searchbar").onkeypress = null;
+    setTimeout(function () {
+        console.log("here");
+        console.log(key);
+        getSearchSuggestions(document.getElementById("searchbar").value);
+        document.getElementById("searchbar").onkeypress = sendDelayedKeyPress;
+    }, 1000);
+};
+
+var input = document.getElementById("searchbar");

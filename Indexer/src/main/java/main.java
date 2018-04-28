@@ -49,6 +49,7 @@ public class main {
 
          */
 
+
         Search.setInitialParameters(mongo, credential, database, stopWordSet);
 
         String search_text = "classified";

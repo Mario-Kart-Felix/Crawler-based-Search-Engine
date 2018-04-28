@@ -32,4 +32,9 @@ Crawler/.idea/workspace.xml
 Crawler/queues.txt
 Crawler/gathered_links.txt
 Crawler/web_graph.txt
+Client/.idea
+ClientBackEnd/.idea
+ClientBackend/.idea
+*/out/
 out/
+*.class

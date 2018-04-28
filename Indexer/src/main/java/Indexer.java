@@ -18,12 +18,12 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class Indexer implements Runnable {
 
-    private static AtomicInteger i = new AtomicInteger();
-    private static Map<String, Integer> tags_rank;
-    private static MongoClient mongo;
-    private static MongoCredential credential;
-    private static MongoDatabase database;
-    private static Set<String> stopWordSet;
+    //private static AtomicInteger i = new AtomicInteger();
+    private  Map<String, Integer> tags_rank;
+    private  MongoClient mongo;
+    private  MongoCredential credential;
+    private  MongoDatabase database;
+    private  Set<String> stopWordSet;
     HashMap<String, Page> terms_map = new HashMap<String, Page>();
     private Pattern pattern;
     private Document documents_to_process;
@@ -32,8 +32,14 @@ public class Indexer implements Runnable {
     // Stemmer.
     SnowballStemmer snowballStemmer;
 
-    public Indexer(Document _document)
+    public Indexer(Document _document,  MongoClient _mongo, MongoCredential _credential, MongoDatabase _database, Set<String> _stopWordSet)
     {
+
+
+        mongo = _mongo;
+        credential = _credential;
+        database = _database;
+        stopWordSet = _stopWordSet;
 
         snowballStemmer = new englishStemmer();
 
@@ -56,16 +62,18 @@ public class Indexer implements Runnable {
     public void run()
     {
 
-        terms_map.clear();
-        collection = database.getCollection("terms");
-        updateDocument(documents_to_process.getString("url"));
-        addDocument();
-        //addDocument(documents_to_process.getString("body"), documents_to_process.getString("url"));
-        System.out.println("documenets indexed " + i.getAndIncrement());
+            collection = database.getCollection("terms");
+            updateDocument(documents_to_process.getString("url"));
+            addDocument();
+
+            //System.out.println(" finished 1 doc");
+            //addDocument(documents_to_process.getString("body"), documents_to_process.getString("url"));
+//            System.out.println("documenets indexed " + i.getAndIncrement());
+
 
     }
 
-    private static void init_tags_rank()
+  /*  private static void init_tags_rank()
     {
 
         tags_rank = new HashMap<String, Integer>();
@@ -78,13 +86,14 @@ public class Indexer implements Runnable {
         tags_rank.put("b", 8);
         tags_rank.put("title", 11);
 
-    }
+    }*/
 
 
 
     private void addDocument()
     {
 
+        terms_map.clear();
         AtomicInteger current_word_pos = new AtomicInteger(0);
 
         List<String> title = documents_to_process.get("title",List.class);
@@ -100,6 +109,7 @@ public class Indexer implements Runnable {
         List<WriteModel<Document>> updates = new ArrayList<WriteModel<Document>>();
 
         try {
+
             for (Map.Entry<String, Page> entry : terms_map.entrySet()) {
                 Document temp_doc = new Document("positions", entry.getValue().positions)
                         .append("url", entry.getValue().url)
@@ -126,13 +136,12 @@ public class Indexer implements Runnable {
 
             // Bulk write options.
             BulkWriteOptions bulkWriteOptions = new BulkWriteOptions();
-            bulkWriteOptions.ordered(false); //False to allow parallel execution
+            bulkWriteOptions.ordered(true); //False to allow parallel execution
             bulkWriteOptions.bypassDocumentValidation(true);
 
 
             // Perform bulk update.
-            bulkWriteResult = collection.bulkWrite(updates,
-                    bulkWriteOptions);
+            bulkWriteResult = collection.bulkWrite(updates);
         } catch (BulkWriteException e)
         {
 
@@ -155,7 +164,8 @@ public class Indexer implements Runnable {
         Page page;
 
         try {
-           // String[] splitArray = text.split("\\s+");
+
+            // String[] splitArray = text.split("\\s+");
             String unstemmed;
             for (int i = 0; i < splitArray.size(); i++) {
 
@@ -163,9 +173,6 @@ public class Indexer implements Runnable {
                 // Check if empty don't increment.
                 if( splitArray.get(i).length() == 0)
                     continue;
-
-                // Store unstemmed.
-                unstemmed = splitArray.get(i);
 
                 // Remove unwanted symbols.
                 Matcher matcher = pattern.matcher(splitArray.get(i));
@@ -175,8 +182,6 @@ public class Indexer implements Runnable {
 
                 // Stem the word.
                 splitArray.set(i, stem(splitArray.get(i)));
-
-
 
                 // Check if it is a stop word.
                 if (stopWordSet.contains(splitArray.get(i)))
@@ -202,19 +207,19 @@ public class Indexer implements Runnable {
                 if (!tag.equals("title"))
                     page.positions.add(current_word_pos.getAndIncrement());
 
-                if (page.tag != null && tags_rank.containsKey(page.tag) && tags_rank.containsKey(tag))
-                {
-
-                    if ((tags_rank.get(tag) > tags_rank.get(page.tag)))
-                        page.tag = tag;
-
-                } else
-                    {
-
-                        page.tag = tag;
-
-                    }
-
+//                if (page.tag != null && tags_rank.containsKey(page.tag) && tags_rank.containsKey(tag))
+//                {
+//
+//                    if ((tags_rank.get(tag) > tags_rank.get(page.tag)))
+//                        page.tag = tag;
+//
+//                } else
+//                    {
+//
+//                        page.tag = tag;
+//
+//                    }
+                page.tag = tag;
                 page.url = url;
                 page.unstemmed.add(unstemmed);
                 terms_map.put(splitArray.get(i), page);
@@ -243,16 +248,12 @@ public class Indexer implements Runnable {
 
     }
 
-    public static void setInitialParameters(MongoClient _mongo, MongoCredential _credential, MongoDatabase _database, Set<String> _stopWordSet) {
+   /* public static void setInitialParameters(MongoClient _mongo, MongoCredential _credential, MongoDatabase _database, Set<String> _stopWordSet) {
 
-        mongo = _mongo;
-        credential = _credential;
-        database = _database;
-        stopWordSet = _stopWordSet;
 
         init_tags_rank();
 
-    }
+    }*/
 
     public void normal_search(String term) {
         MongoCollection<Document> collection;

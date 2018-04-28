@@ -1,4 +1,5 @@
 import com.mongodb.*;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.*;
@@ -6,10 +7,7 @@ import org.bson.Document;
 import org.tartarus.snowball.SnowballStemmer;
 import org.tartarus.snowball.ext.englishStemmer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,16 +25,119 @@ public class Search {
     private static Set<String> stopWordSet;
 
 
-    public  Search ()
-    {
+    public Search() {
         snowballStemmer = new englishStemmer();
         pattern = Pattern.compile("[^a-z A-Z]");
 
     }
 
+    public void phrase_search(String search_text) {
 
-    public void normal_search(String search_text)
-    {
+        // Split words to search for each word independently.
+        String[] words = search_text.split("\\s+");
+
+        // First word to start with the phrase search.
+        int phrase_start_index = 0;
+
+        // Clean String of text.
+        for ( int i = 0; i<words.length; i++)
+        {
+
+            // pattern = all ascii codes that are not alphabet.
+            Matcher matcher = pattern.matcher(words[i]);
+            words[i] = matcher.replaceAll("").toLowerCase();
+
+            // If word in stopping words, advance the pointer.
+            if(stopWordSet.contains(words[i]))
+                phrase_start_index++;
+
+
+        }
+
+        // If all stop words then return.
+        if(phrase_start_index>= words.length)
+            return;
+
+        // First word to search with.
+        String word = words[phrase_start_index];
+
+        // Table used in search.
+        MongoCollection<Document> collection;
+        collection = database.getCollection("terms");
+
+        // Pages_collection.
+        MongoCollection<Document> page_collection = database.getCollection("pages");
+
+
+        List<String> urls = new ArrayList<String>();
+            AggregateIterable<Document> docs = collection.aggregate(
+                    Arrays.asList(
+                            new Document("$unwind", "$documents"),
+                            new Document("$match", new Document("documents.unstemmed", word)),
+                                    new Document("$project", new Document("document","$documents"))
+                    )
+            );
+            for (Document doc : docs) {
+
+                Document document = doc.get("document", Document.class);
+                String url = document.getString("url");
+
+                Document page = page_collection.find(Filters.eq("url",  url)).first();
+                List<String> body =  page.get("body", List.class);
+
+                List<Integer> positions = document.get("positions",List.class);
+
+                for( Integer indx : positions)
+                {
+                    String test = body.get(indx);
+                    int x = 2321;
+                }
+
+            }
+
+            // Get term with  this word in the unstemmed array.
+           /*  Bson filter = Filters.in("documents.unstemmed",word);
+
+            // Get term with this word.
+            Document term_document = collection.find(filter).first();
+
+            List<Document> documents = term_document.get("documents",List.class);
+
+            for( Document doc : documents)
+            {
+                String url = doc.getString("url");
+
+                // If url is in the map already.
+                if(!urls.contains(url))
+                {
+                    continue;
+                }
+
+                List<String> unstemmed = doc.get("unstemmed", List.class);
+
+                if(!unstemmed.contains(url))
+                {
+                    continue;
+                }
+
+                List<Integer> positions = doc.get("positions", List.class);
+
+                Document page = page_collection.find(Filters.eq("url", url)).first();
+
+                List<String> body = page.get("body", List.class);
+                int x = 3;
+
+            }
+
+            // Get pages has this word.
+*/
+
+        }
+
+
+
+    // TODO:: Remove stop words.
+    public void normal_search(String search_text) {
 
         // Table used in search.
         MongoCollection<Document> collection;
@@ -55,38 +156,35 @@ public class Search {
         String[] words = search_text.split("\\s+");
 
 
-        for( String word : words)
-        {
+        for (String word : words) {
 
             // pattern = all ascii codes that are not alphabet.
             Matcher matcher = pattern.matcher(word);
-            stemmed_word = matcher.replaceAll("").toLowerCase();
-
+            word = matcher.replaceAll("").toLowerCase();
+            stemmed_word = word;
             // Stem.
             stemmed_word = stem(stemmed_word);
 
             // Check if string is a stop word or empty after stemming.
-            if(stemmed_word.length() == 0 || stopWordSet.contains(stemmed_word) || word.length() == 0)
-            {
+            if (stemmed_word.length() == 0 || stopWordSet.contains(stemmed_word) || word.length() == 0) {
 
                 continue;
 
             }
 
-            words_count ++;
+            words_count++;
 
             Document result = collection.find(Filters.eq("term", stemmed_word)).first();
 
             if (result == null)
                 continue;
 
-            List<Document> documents =  result.get("documents", List.class);
+            List<Document> documents = result.get("documents", List.class);
 
             // Temp page score object to hold page ranks.
-            PageScore temp_page_score ;
+            PageScore temp_page_score;
 
-            for (Document doc : documents)
-            {
+            for (Document doc : documents) {
 
                 String url = doc.getString("url");
                 String tag = doc.getString("tag");
@@ -94,8 +192,7 @@ public class Search {
                 // Get list of unstemmed words to rank page by the number of unstemmed words found.
                 List<String> unstemmed_words_in_document = doc.get("unstemmed", List.class);
 
-                if(!pages.containsKey(url))
-                {
+                if (!pages.containsKey(url)) {
 
                     pages.put(url, new PageScore());
 
@@ -111,35 +208,34 @@ public class Search {
                     temp_page_score.unstemmed_score = temp_page_score.unstemmed_score + 1;
 
                 // Give score to title.
-                if(tag.equals("title"))
-                    temp_page_score.title_score+=1;
+                if (tag.equals("title"))
+                    temp_page_score.title_score += 1;
 
                 temp_page_score.words = temp_page_score.words + 1;
 
                 // Return back the page.
                 pages.put(url, temp_page_score);
 
-        }
+            }
         }
 
-        for (Map.Entry<String, PageScore> entry : pages.entrySet())
-        {
+        for (Map.Entry<String, PageScore> entry : pages.entrySet()) {
 
-            pages.get(entry.getKey()).unstemmed_score /=words_count;
-            pages.get(entry.getKey()).words /=words_count;
-            pages.get(entry.getKey()).title_score /=words_count;
+            pages.get(entry.getKey()).unstemmed_score /= words_count;
+            pages.get(entry.getKey()).words /= words_count;
+            pages.get(entry.getKey()).title_score /= words_count;
 
             // Logging.
             System.out.println(entry.getKey());
             System.out.println(" unstemmed_score " +
                     entry.getValue().unstemmed_score + " count score : " + entry.getValue().words
-                   + " title score : " + entry.getValue().title_score);
+                    + " title score : " + entry.getValue().title_score);
 
         }
+
     }
 
-    private String stem(String s)
-    {
+    private String stem(String s) {
 
         snowballStemmer.setCurrent(s);
         snowballStemmer.stem();
@@ -147,8 +243,7 @@ public class Search {
 
     }
 
-    public static void setInitialParameters(MongoClient _mongo, MongoCredential _credential, MongoDatabase _database, Set<String> _stopWordSet)
-    {
+    public static void setInitialParameters(MongoClient _mongo, MongoCredential _credential, MongoDatabase _database, Set<String> _stopWordSet) {
 
         mongo = _mongo;
         credential = _credential;

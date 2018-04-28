@@ -53,11 +53,11 @@ public class main {
 
         Search.setInitialParameters(mongo, credential, database, stopWordSet);
 
-        String search_text = " ahmed google chrome";
+        String search_text = "Bounty";
 
         Search client = new Search();
 
-        client.normal_search(search_text);
+        client.phrase_search(search_text);
 
 
         /*

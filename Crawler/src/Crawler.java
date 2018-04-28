@@ -34,6 +34,7 @@ public class Crawler implements Runnable {
     public static Set visited_links = new HashSet();
     public static ConcurrentHashMap robots = new ConcurrentHashMap<String, RobotsTxt>();
     public static ConcurrentHashMap<String, ArrayList<String>> webGraph = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap domainDepth = new ConcurrentHashMap<String,Integer>();
     private static MongoClient mongoClient;
     private static MongoCredential credintials;
     private static MongoDatabase database;
@@ -347,6 +348,15 @@ public class Crawler implements Runnable {
                 for (int i = 1; i < tokens.length; i++)
                     rel.append(tokens[i]);
             }
+            if(!domainDepth.containsKey(abs)){
+                domainDepth.put(abs,0);
+            }
+
+            int count = (int)domainDepth.get(abs);
+            if(count>=30)
+                return false;
+            domainDepth.put(abs,count+1);
+
 
             if (!robots.containsKey(abs)) {
                 StringBuilder robotURL = new StringBuilder("https://" + abs + "/robots.txt");

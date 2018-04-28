@@ -1,0 +1,2 @@
+/media/mohamed/D0DCD35ADCD33A04/Cuda/toolkit/bin/nvcc ranker.cu -I/media/mohamed/D0DCD35ADCD33A04/Cuda/toolkit/samples/common/inc --std=c++11
+

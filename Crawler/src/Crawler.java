@@ -4,7 +4,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.panforge.robotstxt.RobotsTxt;
 import org.jsoup.Connection;
-import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -35,6 +34,7 @@ public class Crawler implements Runnable {
     public static Set visited_links = new HashSet();
     public static ConcurrentHashMap robots = new ConcurrentHashMap<String, RobotsTxt>();
     public static ConcurrentHashMap<String, ArrayList<String>> webGraph = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap domainDepth = new ConcurrentHashMap<String,Integer>();
     private static MongoClient mongoClient;
     private static MongoCredential credintials;
     private static MongoDatabase database;
@@ -48,10 +48,10 @@ public class Crawler implements Runnable {
 
     static public void init(String fileName) {
         try {
-             mongoClient = new MongoClient("localhost", 27017);
-             credintials = MongoCredential.createCredential("", "test", "".toCharArray());
-             database = mongoClient.getDatabase("test");
-             collection = database.getCollection("pages");
+            mongoClient = new MongoClient("localhost", 27017);
+            credintials = MongoCredential.createCredential("", "test", "".toCharArray());
+            database = mongoClient.getDatabase("test");
+            collection = database.getCollection("pages");
             System.out.println(collection.find().first());
         } catch (Exception e) {
         }
@@ -76,7 +76,7 @@ public class Crawler implements Runnable {
                 String value;
                 while ((line = bufferedReader.readLine()) != null) {
                     String key = line;
-                    while ((value=bufferedReader.readLine())!=null&&!value.equals("z")) {
+                    while ((value = bufferedReader.readLine()) != null && !value.equals("z")) {
                         if (webGraph.containsKey(key)) {
                             webGraph.get(key).add(value);
                         } else {
@@ -196,6 +196,8 @@ public class Crawler implements Runnable {
     public void crawl() throws IOException {
         while (true) {
 
+
+
             // Crawling iteration ends
             if (processed_links >= 5000)
                 break;
@@ -267,24 +269,18 @@ public class Crawler implements Runnable {
 
                 org.bson.Document document = new org.bson.Document("body", splitted_all_text)
                         .append("status", 0)
-                        .append("title",splitted_title)
+                        .append("title", splitted_title)
                         .append("url", url);
 
-                try{
-
+                try {
                     collection.insertOne(document);
-
-
-                }catch (Exception e)
-                {
+                } catch (Exception e) {
                     System.out.println(e.getMessage());
                     e.printStackTrace();
-
                 }
 
                 // Get <a> tags (hyperlinks) in the document
                 Elements links = doc.select("a[href]");
-
                 for (Element link : links) {
 
                     synchronized (visited_links) {
@@ -352,6 +348,15 @@ public class Crawler implements Runnable {
                 for (int i = 1; i < tokens.length; i++)
                     rel.append(tokens[i]);
             }
+            if(!domainDepth.containsKey(abs)){
+                domainDepth.put(abs,0);
+            }
+
+            int count = (int)domainDepth.get(abs);
+            if(count>=30)
+                return false;
+            domainDepth.put(abs,count+1);
+
 
             if (!robots.containsKey(abs)) {
                 StringBuilder robotURL = new StringBuilder("https://" + abs + "/robots.txt");

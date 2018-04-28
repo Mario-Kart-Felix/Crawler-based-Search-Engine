@@ -16,7 +16,9 @@ public class main {
             //TODO:insert search for the database
             search.add_suggestion(suggestion);
             response.status(200);
-            response.body(search.normal_search(suggestion));
+            String val = search.phrase_search(suggestion);
+            response.body(val);
+            System.out.println(val);
             if(response.body()==null||response.body().equals(""))
                 response.body("not empty");
             return response.body();

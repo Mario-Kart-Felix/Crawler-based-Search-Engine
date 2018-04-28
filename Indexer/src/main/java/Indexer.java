@@ -159,6 +159,11 @@ public class Indexer implements Runnable {
             String unstemmed;
             for (int i = 0; i < splitArray.size(); i++) {
 
+
+                // Check if empty don't increment.
+                if( splitArray.get(i).length() == 0)
+                    continue;
+
                 // Store unstemmed.
                 unstemmed = splitArray.get(i);
 
@@ -166,11 +171,15 @@ public class Indexer implements Runnable {
                 Matcher matcher = pattern.matcher(splitArray.get(i));
                 splitArray.set(i,matcher.replaceAll("").toLowerCase());
 
+                unstemmed = splitArray.get(i);
+
                 // Stem the word.
                 splitArray.set(i, stem(splitArray.get(i)));
 
+
+
                 // Check if it is a stop word.
-                if (stopWordSet.contains(splitArray.get(i)) || splitArray.get(i).length() == 0)
+                if (stopWordSet.contains(splitArray.get(i)))
                 {
 
                     current_word_pos.getAndIncrement();

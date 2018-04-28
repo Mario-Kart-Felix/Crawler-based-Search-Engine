@@ -21,7 +21,6 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-    margin-top: 75px;
     border-radius: 5px;
     flex-direction: column;
 }
@@ -37,7 +36,8 @@ input[type=text] {
 .googlelogo {
     max-width: 200px;
     min-width: 200px;
-    margin: auto;
+    /*margin: auto;*/
+    margin: 30px;
     justify-content: center;
 }
 

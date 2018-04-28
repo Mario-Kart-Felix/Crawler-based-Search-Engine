@@ -102,6 +102,21 @@ public class Spider {
 
         System.out.println("All crawlers finished!");
 
+        try {
+            Process process;
+            do {
+                process = Runtime.getRuntime().exec("sudo /home/samir/Crawler-based-Search-Engine/Crawler/ranker");
+                process.waitFor();
+                System.out.println(process.exitValue());
+            }while(process.exitValue() != 0);
+
+            process.destroy();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+
         // Save states of queues
         //Crawler.saveQueues("queues.txt", "gathered_links.txt");
 

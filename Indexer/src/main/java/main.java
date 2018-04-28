@@ -55,9 +55,11 @@ public class main {
 
         Search client = new Search();
 
-        String result = client.phrase_search(search_text);
+        //String result = client.phrase_search(search_text);
+        String normal_search_result =  client.normal_search(search_text);
+        System.out.println(normal_search_result);
 
-        System.out.println(result);
+        //System.out.println(result);
         /*
             Testing search-end
 //         */

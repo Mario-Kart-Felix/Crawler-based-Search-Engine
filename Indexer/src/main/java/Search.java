@@ -1,5 +1,6 @@
 import com.mongodb.*;
 import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.*;
@@ -168,9 +169,10 @@ public class Search {
                             snippet.append(body.get(i)).append(" ");
                         }
                         JSONObject object = new JSONObject();
-                        object.put("url", url);
-                        object.put("snippet", snippet);
-                        object.put("title", title);
+                        
+                        object.put("url", ""+url+"");
+                        object.put("title",""+title+"");
+                        object.put("snippet",""+snippet+"");
                         jsonarray.add(object);
                         json_array.append("{" + "\"url\":\"")
                                 .append(url).append("\",")
@@ -238,14 +240,16 @@ public class Search {
 
 
     // TODO:: Remove stop words.
-    public void normal_search(String search_text) {
+    public String normal_search(String search_text) {
 
         // Table used in search.
         MongoCollection<Document> collection;
         collection = database.getCollection("terms");
+        MongoCollection<Document> page_collection = database.getCollection("pages");
 
         // Pages to be ranked.
         HashMap<String, PageScore> pages = new HashMap<String, PageScore>();
+        HashMap<String, List<Integer>> page_positions = new HashMap<String, List<Integer>>();
 
         // Init words count = 0 , used to normalize ranks.
         int words_count = 0;
@@ -289,6 +293,8 @@ public class Search {
 
                 String url = doc.getString("url");
                 String tag = doc.getString("tag");
+                List<Integer> positions = doc.get("positions",List.class);
+
 
                 // Get list of unstemmed words to rank page by the number of unstemmed words found.
                 List<String> unstemmed_words_in_document = doc.get("unstemmed", List.class);
@@ -314,11 +320,30 @@ public class Search {
 
                 temp_page_score.words = temp_page_score.words + 1;
 
+
                 // Return back the page.
                 pages.put(url, temp_page_score);
 
+                // Add page positions.
+                if(!page_positions.containsKey(url))
+                {
+                    page_positions.put(url, new ArrayList<Integer>());
+                }
+                List<Integer> temp_pos = page_positions.get(url);
+                temp_pos.add(positions.get(0));
+
+                page_positions.put(url,temp_pos);
+
             }
         }
+
+        TreeMap<String,Double> mp = new TreeMap<String, Double>();
+
+        ArrayList<String> sorted_urls  = new ArrayList<String>();
+
+        double weight_unstemmed = 1;
+        double weight_words = 0.5;
+        double weight_title = 5;
 
         for (Map.Entry<String, PageScore> entry : pages.entrySet()) {
 
@@ -326,14 +351,78 @@ public class Search {
             pages.get(entry.getKey()).words /= words_count;
             pages.get(entry.getKey()).title_score /= words_count;
 
+            // Score.
+            double score =  (entry.getValue().unstemmed_score * weight_unstemmed+
+                        entry.getValue().words * weight_words+
+                                entry.getValue().title_score * weight_title);
+
+            mp.put(entry.getKey(), score);
+
+            sorted_urls.add(entry.getKey());
             // Logging.
-            System.out.println(entry.getKey());
-            System.out.println(" unstemmed_score " +
-                    entry.getValue().unstemmed_score + " count score : " + entry.getValue().words
-                    + " title score : " + entry.getValue().title_score);
+//            System.out.println(entry.getKey());
+//            System.out.println(" unstemmed_score " +
+//                    entry.getValue().unstemmed_score + " count score : " + entry.getValue().words
+//                    + " title score : " + entry.getValue().title_score);
 
         }
 
+        sorted_urls.sort(Comparator.comparing(mp::get).reversed());
+
+//        for(String key : mp.descendingKeySet()){
+//            System.out.println("value of " + key + " is " + mp.get(key));
+//        }
+
+
+        FindIterable<Document> top_pages = page_collection.find(Filters.in("url",sorted_urls));
+
+
+        JSONArray jsonarray = new JSONArray();
+
+        for(Document top_page : top_pages)
+        {
+
+            JSONObject object = new JSONObject();
+            String url = top_page.getString("url");
+            StringBuilder snippet = new StringBuilder();
+
+            StringBuilder title = new StringBuilder();
+            List<String> title_arr = top_page.get("title", List.class);
+            for( String s : title_arr)
+                title.append(s);
+
+            List<Integer> curr_page_pos = page_positions.get(url);
+
+            List<String> body = top_page.get("body", List.class);
+
+            for(int pos : curr_page_pos)
+            {
+
+                for(int i = Math.max(0, pos-5); i<Math.min(pos+5, body.size()); i++)
+                {
+
+                    snippet.append(body.get(i)).append(" ");
+
+                }
+                snippet.append("....");
+            }
+            object.put("url", ""+url+"");
+            object.put("title",""+title+"");
+            object.put("snippet",""+snippet+"");
+            jsonarray.add(object);
+
+        }
+        for(String url : sorted_urls)
+        {
+
+            //System.out.println("value of " + url + " is " + mp.get(url));
+
+            // Get page with this url.
+
+
+        }
+
+        return jsonarray.toJSONString();
     }
 
     private String stem(String s) {
